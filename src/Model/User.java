@@ -1,16 +1,12 @@
 package Model;
 
-/**
- * Created by Edgaras on 4/9/2016.
- */
+
 public class User {
 
-    int userId;
-    String fullName;
-    String userName;
-    String password;
-
-
+    private int userId;
+    private String fullName;
+    private String userName;
+    private String password;
 
     public String getFullName() {
         return fullName;
@@ -35,8 +31,4 @@ public class User {
         this.password = password;
 
     }
-
-
-
-
 }

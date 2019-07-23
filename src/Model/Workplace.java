@@ -1,14 +1,12 @@
 package Model;
 
-/**
- * Created by Edgaras on 4/9/2016.
- */
+
 public class Workplace {
 
-    int workplaceId;
-    int userId;
-    String name;
-    int salary;
+    private int workplaceId;
+    private int userId;
+    private String name;
+    private int salary;
 
     public int getUserId() {
         return userId;

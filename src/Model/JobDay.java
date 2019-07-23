@@ -2,17 +2,15 @@ package Model;
 
 import java.sql.Date;
 
-/**
- * Created by Edgaras on 4/9/2016.
- */
+
 public class JobDay {
 
-    int jobDayId;
-    int userId;
-    String workplaceName;
-    Date date;
-    int hourseWorked;
-    double payPerHour;
+    private int jobDayId;
+    private int userId;
+    private String workplaceName;
+    private Date date;
+    private int hourseWorked;
+    private double payPerHour;
 
     public int getJobDayId() {
         return jobDayId;
@@ -38,8 +36,6 @@ public class JobDay {
         return payPerHour;
     }
 
-
-
     public JobDay(int jobDayId, int userId, String workplaceName, Date date, int hourseWorked, double payPerHour) {
         this.jobDayId = jobDayId;
         this.userId = userId;
@@ -56,8 +52,4 @@ public class JobDay {
         this.hourseWorked = hourseWorked;
         this.payPerHour = payPerHour;
     }
-
-
-
-
 }
