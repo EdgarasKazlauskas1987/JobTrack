@@ -8,3 +8,19 @@ and open the template in the editor.
     Author     : Edgaras
 */
 
+.txt-addUser{
+    -fx-font-size: 30px;
+    -fx-border-color: black;
+}
+
+.btn-addUser{
+    -fx-font-size: 37px;
+    -fx-background-color: powderblue;
+    -fx-border-color: black;
+}
+
+.vBox-addUser{
+    -fx-spacing: 25;
+    -fx-background-color: ghostwhite;
+}
+

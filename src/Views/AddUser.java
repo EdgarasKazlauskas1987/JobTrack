@@ -2,83 +2,65 @@ package Views;
 
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-
 import Controller.Database;
-import Views.Login;
 import javafx.stage.Stage;
 
-/**
- * Created by Edgaras on 4/8/2016.
- */
 public class AddUser {
-
     Database databaseModel;
     Login logInView;
 
-    Scene newAccountScene;
+    Scene scnNewUser;
     Stage stage;
 
-   // Label fullnameLabel;
-    //Label usernameLabel;
-    //Label passwordLabel;
+    TextField txtFullname = new TextField();
+    TextField txtUsername = new TextField();
+    TextField txtPassword = new TextField();
 
-    TextField fullnameTextfield;
-    TextField usernameTextfield;
-    TextField passwordTextfield;
+    Button btnBack = new Button("Back");
+    Button btnSave = new Button("Save");
 
-    Button backButton;
-    Button saveButton;
-
-    VBox newAccountVbox;
-    HBox newAccountHbox;
+    VBox vBoxNewUser = new VBox();
+    HBox hBoxNewUser = new HBox();
 
     public Stage getNewAccountStage()
     {
-        fullnameTextfield = new TextField();
-        fullnameTextfield.setStyle("-fx-font-size: 30px; -fx-border-color: black");
-        fullnameTextfield.setPromptText("Your name");
-        usernameTextfield = new TextField();
-        usernameTextfield.setStyle("-fx-font-size: 30px; -fx-border-color: black");
-        usernameTextfield.setPromptText("User name");
-        passwordTextfield = new TextField();
-        passwordTextfield.setStyle("-fx-font-size: 30px; -fx-border-color: black");
-        passwordTextfield.setPromptText("Password");
+        scnNewUser = new Scene(vBoxNewUser, 256, 400);
+        scnNewUser.getStylesheets().add("Resources/Styles/AddUserStyles.css");
+        
+        txtFullname.getStyleClass().add("txt-addUser");
+        txtFullname.setPromptText("Your name");
+        
+        txtUsername.getStyleClass().add("txt-addUser");
+        txtUsername.setPromptText("User name");
+        
+        txtPassword.getStyleClass().add("txt-addUser");
+        txtPassword.setPromptText("Password");
 
-        backButton = new Button("Back");
-        backButton.setStyle("-fx-font-size: 37px; -fx-background-color: powderblue; -fx-border-color: black");
-        saveButton = new Button("Save");
-        saveButton.setStyle("-fx-font-size: 37px; -fx-background-color: powderblue; -fx-border-color: black");
+        btnBack.getStyleClass().add("btn-addUser");
+        btnSave.getStyleClass().add("btn-addUser");
 
-        saveButton.setOnAction(event -> {
+        btnSave.setOnAction(event -> {
             databaseModel = new Database();
+            databaseModel.addNewUser(txtFullname.getText(), txtUsername.getText(),
+                txtPassword.getText());
 
-            databaseModel.addNewUser(fullnameTextfield.getText(), usernameTextfield.getText(),
-                    passwordTextfield.getText());
+            stage.close();
+        });
 
+        btnBack.setOnAction(event -> {
            stage.close();
         });
 
-        backButton.setOnAction(event -> {
-           stage.close();
-        });
-
-        newAccountHbox = new HBox();
-        newAccountVbox = new VBox();
-
-        newAccountHbox.getChildren().addAll(backButton, saveButton);
-        newAccountVbox.getChildren().addAll( fullnameTextfield,
-                usernameTextfield, passwordTextfield, newAccountHbox);
-        newAccountVbox.setSpacing(25);
-        newAccountVbox.setStyle("-fx-background-color: ghostwhite");
-
-        newAccountScene = new Scene(newAccountVbox, 256, 400);
+        hBoxNewUser.getChildren().addAll(btnBack, btnSave);
+        vBoxNewUser.getChildren().addAll(txtFullname,
+                txtUsername, txtPassword, hBoxNewUser);
+        vBoxNewUser.getStyleClass().add("vBox-addUser");
 
         stage = new Stage();
-        stage.setScene(newAccountScene);
+        stage.setScene(scnNewUser);
         stage.show();
 
         return stage;
