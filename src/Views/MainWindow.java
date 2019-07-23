@@ -15,44 +15,39 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-
 import java.sql.Date;
 import java.util.ArrayList;
-import java.util.Calendar;
 
-/**
- * Created by Edgaras on 4/2016.
- */
+
 public class MainWindow {
 
-    AddWorkplace newWorkplaceView;
+    AddWorkplace newWorkplace;
     Database databaseModel;
     Login logInView;
 
     Workplace workplace;
 
-    Label workplaceLabel;
-    Label calendarLabel;
-    Label fromLabel;
-    Label payHourLabel;
-   // Label yearLabel;
-   // Label monthLabel;
-    Label totalHourseWorkedLabel;
-    Label totalMoneyEarnedLabel;
+    Label lblWorkplace = new Label("Workplace");
+    Label lblCalendar = new Label("Choose date");
+    Label lblHoursWorked = new Label("Hours Worked");
+    Label lblPayHour = new Label("Pay/h");
 
-    Button saveButton;
-    Button addNewWorkplaceButton;
-    Button backButton;
-    Button showButton;
+    Label lblTotalHoursWorked = new Label("Total hourse worked");
+    Label lblTotalMoneyEarned = new Label("Total money earned");
+
+    Button btnSave = new Button("Save new Job day");
+    Button btnAddNewWorkplace = new Button("Add new workplace");
+    Button btnBack = new Button("Back");
+    Button btnShow = new Button("Show");
 
     ComboBox workplaceCombobox;
     ComboBox<Integer> yearCombobox;
     ComboBox<String> monthCombobox;
 
-    TextField fromTextfield;
-    TextField payPerHourTextField;
-    TextField totalHourseWorkedTextField;
-    TextField totalMoneyEarnedTextField;
+    TextField txtHoursWorked = new TextField();
+    TextField txtPayPerHour = new TextField();
+    TextField txtTotalHoursWorked = new TextField();
+    TextField txtTotalMoneyEarned = new TextField();
 
     DatePicker datePicker;
 
@@ -60,12 +55,12 @@ public class MainWindow {
 
     BorderPane borderPane;
 
-    Scene mainWindowScene;
+    Scene scnMainWindow;
 
-    Stage mainWindowStage;
+    Stage stgMainWindow;
 
-    VBox leftVbox;
-    VBox rightVbox;
+    VBox vBoxLeft = new VBox();
+    VBox vBoxRight = new VBox();
 
     VBox vBox1;
     VBox vBox2;
@@ -107,12 +102,6 @@ public class MainWindow {
 
     public Stage getMainWindowStage()
     {
-        //borderpain left
-        workplaceLabel = new Label("Workplace");
-        calendarLabel = new Label("Choose date");
-        fromLabel = new Label("Hours Worked"); // make double!!
-        payHourLabel = new Label("Pay/h");
-
         databaseModel = new Database();
         logInView = new Login();
 
@@ -122,12 +111,11 @@ public class MainWindow {
 
        // editComboBox();
 
-        workplaceCombobox.setOnAction(event1 -> {
-            Workplace car = (Workplace) workplaceCombobox.getSelectionModel().getSelectedItem();
-
-            Double salaryPerHour =   databaseModel.getSalary(car.getName());
+        workplaceCombobox.setOnAction(event -> {
+            Workplace workplace = (Workplace) workplaceCombobox.getSelectionModel().getSelectedItem();
+            Double salaryPerHour = databaseModel.getSalary(workplace.getName());
             String salary = String.valueOf(salaryPerHour);
-            payPerHourTextField.setText(salary);
+            txtPayPerHour.setText(salary);
         });
 
         tableView = new TableView();
@@ -145,45 +133,21 @@ public class MainWindow {
         payCol.setCellValueFactory(new PropertyValueFactory<JobDay, Double>("payPerHour"));
 
         tableView.getColumns().setAll(nameCol, dateCol, hourseCol, payCol);
-
-        //tableView.setPrefWidth(300);
         tableView.setMaxWidth(428);
-
         tableView.setPrefHeight(300);
-
         tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
         datePicker = new DatePicker();
 
-        fromTextfield = new TextField();
-        payPerHourTextField = new TextField();
-        totalHourseWorkedTextField = new TextField();
-        totalMoneyEarnedTextField = new TextField();
-
-        totalHourseWorkedLabel = new Label("Total hourse worked");
-        totalMoneyEarnedLabel = new Label("Total money earned");
-
-       // saveButton = new Button("Save");
-        addNewWorkplaceButton = new Button("Add new workplace");
-       // addNewWorkplaceButton.setStyle("-fx-background-color: powderblue; -fx-border-color: black");
-        backButton = new Button("Go back");
-
-        leftVbox = new VBox();
-        leftVbox.setStyle("-fx-border-color: black");
+        vBoxLeft.setStyle("-fx-border-color: black");
 
         borderPane = new BorderPane();
-        borderPane.setLeft(leftVbox);
-
-        //borderpane right
-
-       // yearLabel = new Label("Year");
-        //monthLabel = new Label("Month");
+        borderPane.setLeft(vBoxLeft);
 
         ObservableList<Integer> yearList  = FXCollections.observableArrayList();
 
         yearList.addAll(2016, 2017, 2018);
         yearCombobox = new ComboBox<>(yearList);
-        //yearCombobox.setPromptText("2016");
         yearCombobox.setValue(2016);
 
         ObservableList<String> monthList  = FXCollections.observableArrayList();
@@ -193,15 +157,14 @@ public class MainWindow {
         monthCombobox = new ComboBox<>(monthList);
         monthCombobox.setValue("April");
 
-        showButton = new Button("Show");
 
-        showButton.setOnAction(event2 -> {
+        btnShow.setOnAction(event -> {
             databaseModel = new Database();
             logInView = new Login();
             ArrayList<JobDay> list = new ArrayList<JobDay>();
 
-           String year = myOwnYear();
-            String month=myOwnMonth();
+            String year = myOwnYear();
+            String month = myOwnMonth();
 
             list = databaseModel.getJobdays(logInView.whoIsLoggedIn().getUserId(),year,month );
             System.out.println(list.size());
@@ -209,44 +172,40 @@ public class MainWindow {
             ObservableList<JobDay> data = FXCollections.observableList(list);
             tableView.setItems(data);
 
-            Double bybis;
-            bybis = databaseModel.getTotalHours(logInView.whoIsLoggedIn().getUserId(),year,month);
-            String bybis2 = String.valueOf(bybis);
-            totalHourseWorkedTextField.setText(bybis2);
+            Double totalHours;
+            totalHours = databaseModel.getTotalHours(logInView.whoIsLoggedIn().getUserId(),year,month);
+            String formattedTotalHours = String.valueOf(totalHours);
+            txtTotalHoursWorked.setText(formattedTotalHours);
 
-            Double pyzda;
-            pyzda = databaseModel.getMoneyEarned(logInView.whoIsLoggedIn().getUserId(), year, month);
-            String pyzda2 = String.valueOf(pyzda);
-            totalMoneyEarnedTextField.setText(pyzda2);
+            Double moneyEarned;
+            moneyEarned = databaseModel.getMoneyEarned(logInView.whoIsLoggedIn().getUserId(), year, month);
+            String formattedMoneyEarned = String.valueOf(moneyEarned);
+            txtTotalMoneyEarned.setText(formattedMoneyEarned);
         });
 
         leftHbox = new HBox();
-        leftHbox.getChildren().addAll(totalHourseWorkedLabel, totalHourseWorkedTextField,
-                totalMoneyEarnedLabel, totalMoneyEarnedTextField);
-        rightVbox = new VBox();
+        leftHbox.getChildren().addAll(lblTotalHoursWorked, txtTotalHoursWorked,
+            lblTotalMoneyEarned, txtTotalMoneyEarned);
 
-       yearCombobox.setStyle("-fx-font-size: 15px; -fx-background-color: powderblue; -fx-border-color: black");
+        yearCombobox.setStyle("-fx-font-size: 15px; -fx-background-color: powderblue; -fx-border-color: black");
         monthCombobox.setStyle("-fx-font-size: 15px; -fx-background-color: powderblue; -fx-border-color: black");
-        showButton.setStyle("-fx-font-size: 15px; -fx-background-color: powderblue; -fx-border-color: black");
+        btnShow.setStyle("-fx-font-size: 15px; -fx-background-color: powderblue; -fx-border-color: black");
         hBoxForTop = new HBox();
-        hBoxForTop.getChildren().addAll(yearCombobox,monthCombobox,showButton);
+        hBoxForTop.getChildren().addAll(yearCombobox,monthCombobox,btnShow);
 
         hBoxForTop.setSpacing(78);
-        rightVbox.getChildren().addAll(hBoxForTop, tableView, leftHbox);
-        borderPane.setRight(rightVbox);
+        vBoxRight.getChildren().addAll(hBoxForTop, tableView, leftHbox);
+        borderPane.setRight(vBoxRight);
 
-        //bottom hBox
-        saveButton = new Button("Save new Job day");
-
-        saveButton.setOnAction(event1 -> {
+        btnSave.setOnAction(event -> {
             try {
                     databaseModel = new Database();
                     logInView = new Login();
                     date = Date.valueOf(datePicker.getValue());
 
                     Workplace car = (Workplace) workplaceCombobox.getSelectionModel().getSelectedItem();
-                    int howManyHourseWorked = Integer.parseInt(fromTextfield.getText());
-                    double howMuchSalary = Double.parseDouble(payPerHourTextField.getText());
+                    int howManyHourseWorked = Integer.parseInt(txtHoursWorked.getText());
+                    double howMuchSalary = Double.parseDouble(txtPayPerHour.getText());
 
                     String data = String.valueOf(datePicker.getValue());
                     String partyear = data.substring(0, 4);
@@ -259,50 +218,49 @@ public class MainWindow {
                     System.out.println(data);
 
                     databaseModel.addJobDay(logInView.whoIsLoggedIn().getUserId(), car.getName(), date,
-                            howManyHourseWorked, howMuchSalary, partyear, monthpart);
+                        howManyHourseWorked, howMuchSalary, partyear, monthpart);
 
                     String a = myOwnYear();
                     String b = myOwnMonth();
 
                     if (!a.equals(null) && !b.equals(null))
                     {
+                        ArrayList<JobDay> list = new ArrayList<JobDay>();
 
+                        String year = myOwnYear();
+                        String month=myOwnMonth();
 
-           ArrayList<JobDay> list = new ArrayList<JobDay>();
+                        list = databaseModel.getJobdays(logInView.whoIsLoggedIn().getUserId(),year,month );
+                        System.out.println(list.size());
 
-            String year = myOwnYear();
-            String month=myOwnMonth();
+                        ObservableList<JobDay> dataSS = FXCollections.observableList(list);
+                        tableView.setItems(dataSS);
 
-            list = databaseModel.getJobdays(logInView.whoIsLoggedIn().getUserId(),year,month );
-            System.out.println(list.size());
-
-            ObservableList<JobDay> dataSS = FXCollections.observableList(list);
-            tableView.setItems(dataSS);
-
-            Double bybis;
-            bybis = databaseModel.getTotalHours(logInView.whoIsLoggedIn().getUserId(),year,month);
-                        String bybis2 = String.valueOf(bybis);
-                        totalHourseWorkedTextField.setText(bybis2);
+                        Double bybis;
+                        bybis = databaseModel.getTotalHours(logInView.whoIsLoggedIn().getUserId(),year,month);
+                            String bybis2 = String.valueOf(bybis);
+                            txtTotalHoursWorked.setText(bybis2);
 
                         Double pyzda;
                         pyzda = databaseModel.getMoneyEarned(logInView.whoIsLoggedIn().getUserId(), year, month);
                         String pyzda2 = String.valueOf(pyzda);
-                        totalMoneyEarnedTextField.setText(pyzda2);
-
+                        txtTotalMoneyEarned.setText(pyzda2);
                     }
 
             else {
+                        
+                updateTable(); 
+                 } 
+            }
 
-            updateTable(); } }
-
-            catch (NullPointerException e )
+            catch (NullPointerException e)
             {
                 Alert alert = new Alert(Alert.AlertType.WARNING);
                 alert.setTitle("Warning Dialog");
                 alert.setHeaderText("Please fill all the information!");
                 alert.showAndWait();
             }
-            catch (NumberFormatException b)
+            catch (NumberFormatException e)
             {
                 Alert alert = new Alert(Alert.AlertType.WARNING);
                 alert.setTitle("Warning Dialog");
@@ -312,47 +270,50 @@ public class MainWindow {
         });
 
 
-        backButton.setOnAction(event1 -> {
-          mainWindowStage.close();
+        btnBack.setOnAction(event -> {
+          stgMainWindow.close();
         });
 
-        addNewWorkplaceButton.setOnAction(event -> {
-            getNewWorkplaceStage();
+        btnAddNewWorkplace.setOnAction(event -> {
+            //getNewWorkplaceStage();
+            newWorkplace = new AddWorkplace();
+            newWorkplace.getNewWorkplaceStage();
+            
         });
 
         bottomHbox = new HBox();
-        bottomHbox.getChildren().addAll(saveButton, addNewWorkplaceButton, backButton);
+        bottomHbox.getChildren().addAll(btnSave, btnAddNewWorkplace, btnBack);
         borderPane.setBottom(bottomHbox);
 
         vBox1 = new VBox();
-        vBox1.getChildren().addAll(workplaceLabel, workplaceCombobox);
+        vBox1.getChildren().addAll(lblWorkplace, workplaceCombobox);
         vBox2 = new VBox();
-        vBox2.getChildren().addAll(calendarLabel, datePicker);
+        vBox2.getChildren().addAll(lblCalendar, datePicker);
         vBox3 = new VBox();
-        vBox3.getChildren().addAll(fromLabel, fromTextfield);
+        vBox3.getChildren().addAll(lblHoursWorked, txtHoursWorked);
         vBox4 = new VBox();
-        vBox4.getChildren().addAll(payHourLabel, payPerHourTextField);
+        vBox4.getChildren().addAll(lblPayHour, txtPayPerHour);
 
         selectedImage3 = new ImageView();
         //image3 = new Image(LogInView.class.getResourceAsStream("pic2.jpg"));
         //selectedImage3.setImage(image3);
 
-        leftVbox.getChildren().addAll(selectedImage3, vBox1, vBox2, vBox3, vBox4);
-        leftVbox.setSpacing(15);
-        leftVbox.setAlignment(Pos.BOTTOM_CENTER);
+        vBoxLeft.getChildren().addAll(selectedImage3, vBox1, vBox2, vBox3, vBox4);
+        vBoxLeft.setSpacing(15);
+        vBoxLeft.setAlignment(Pos.BOTTOM_CENTER);
 
-      saveButton.setStyle("-fx-font-size: 25px; -fx-background-color: powderblue; -fx-border-color: black");
-        addNewWorkplaceButton.setStyle("-fx-font-size: 25px; -fx-background-color: powderblue; -fx-border-color: black");
-        backButton.setStyle("-fx-font-size: 25px; -fx-background-color: powderblue; -fx-border-color: black");
+      btnSave.setStyle("-fx-font-size: 25px; -fx-background-color: powderblue; -fx-border-color: black");
+        btnAddNewWorkplace.setStyle("-fx-font-size: 25px; -fx-background-color: powderblue; -fx-border-color: black");
+        btnBack.setStyle("-fx-font-size: 25px; -fx-background-color: powderblue; -fx-border-color: black");
 
         borderPane.setStyle("-fx-background-color: ghostwhite");
 
-        mainWindowScene = new Scene(borderPane, 605, 400);
-        mainWindowStage = new Stage();
+        scnMainWindow = new Scene(borderPane, 605, 400);
+        stgMainWindow = new Stage();
 
-        mainWindowStage.setScene(mainWindowScene);
-        mainWindowStage.show();
-        return mainWindowStage;
+        stgMainWindow.setScene(scnMainWindow);
+        stgMainWindow.show();
+        return stgMainWindow;
     }
 
     public String myOwnYear()
@@ -466,12 +427,12 @@ public class MainWindow {
         Double bybis;
         bybis = databaseModel.getTotalHours(logInView.whoIsLoggedIn().getUserId(),"2016","04");
         String bybis2 = String.valueOf(bybis);
-        totalHourseWorkedTextField.setText(bybis2);
+        txtTotalHoursWorked.setText(bybis2);
 
         Double pyzda;
         pyzda = databaseModel.getMoneyEarned(logInView.whoIsLoggedIn().getUserId(), "2016", "04");
         String pyzda2 = String.valueOf(pyzda);
-        totalMoneyEarnedTextField.setText(pyzda2);
+        txtTotalMoneyEarned.setText(pyzda2);
 
     }
 
@@ -500,10 +461,10 @@ public class MainWindow {
 
         addButton = new Button("Add");
         addButton.setStyle("-fx-font-size: 37px; -fx-background-color: powderblue; -fx-border-color: black");
-        backButton = new Button("Back");
-        backButton.setStyle("-fx-font-size: 37px; -fx-background-color: powderblue; -fx-border-color: black");
+        btnBack = new Button("Back");
+        btnBack.setStyle("-fx-font-size: 37px; -fx-background-color: powderblue; -fx-border-color: black");
 
-        backButton.setOnAction(event1 -> {
+        btnBack.setOnAction(event1 -> {
             stage.close();
         });
 
@@ -528,7 +489,7 @@ public class MainWindow {
         });
 
         hBox = new HBox();
-        hBox.getChildren().addAll(addButton, backButton);
+        hBox.getChildren().addAll(addButton, btnBack);
 
         selectedImage2 = new ImageView();
         image2 = new Image(Login.class.getResourceAsStream("pic2.jpg"));
