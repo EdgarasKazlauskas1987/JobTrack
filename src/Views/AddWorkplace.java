@@ -16,7 +16,7 @@ import javafx.scene.image.ImageView;
 
 public class AddWorkplace {
 
-    Database databaseModel;
+    Database databaseConnection = Database.getDBInstance();
     Login logInView;
     MainWindow mainWindowView;
 
@@ -68,12 +68,11 @@ public class AddWorkplace {
         btnAdd.setOnAction(event -> {
             try 
             {
-                databaseModel = new Database();
                 logInView = new Login();
                 int userId = logInView.whoIsLoggedIn().getUserId();
                 double salary = Double.parseDouble(txtSalary.getText());
 
-                databaseModel.addWorkplace(userId, txtWorkplaceName.getText(), salary);
+                databaseConnection.addWorkplace(userId, txtWorkplaceName.getText(), salary);
                 //editComboBox();
                 stgAddWorkplace.close();  
                 //mainWindowView = new MainWindow();

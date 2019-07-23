@@ -16,7 +16,7 @@ import Controller.Database;
 public class Login extends Application
 {
     AddUser newAccountView;
-    Database databaseModel;
+    Database databaseConnetion = Database.getDBInstance();
 
     Stage mainStage = new Stage();
     Scene loginScene;
@@ -75,11 +75,10 @@ public class Login extends Application
         });
 
         btnLogin.setOnAction(event -> {
-            databaseModel = new Database();
             String userName = txtUsername.getText();
             String password = ptxtPassword.getText();
 
-            user = databaseModel.retrieveUserIfAllowedToLogIn(userName, password);
+            user = databaseConnetion.retrieveUserIfAllowedToLogIn(userName, password);
 
             if (user == null)
             {

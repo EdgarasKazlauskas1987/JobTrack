@@ -9,7 +9,8 @@ import Controller.Database;
 import javafx.stage.Stage;
 
 public class AddUser {
-    Database databaseModel;
+    
+    Database databaseConnection = Database.getDBInstance();
     Login logInView;
 
     Scene scnNewUser;
@@ -43,8 +44,7 @@ public class AddUser {
         btnSave.getStyleClass().add("btn-addUser");
 
         btnSave.setOnAction(event -> {
-            databaseModel = new Database();
-            databaseModel.addNewUser(txtFullname.getText(), txtUsername.getText(),
+            databaseConnection.addNewUser(txtFullname.getText(), txtUsername.getText(),
                 txtPassword.getText());
 
             stage.close();

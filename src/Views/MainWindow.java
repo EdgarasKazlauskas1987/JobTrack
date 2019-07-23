@@ -22,7 +22,7 @@ import java.util.ArrayList;
 public class MainWindow {
 
     AddWorkplace newWorkplace;
-    Database databaseModel;
+    Database databaseConnection = Database.getDBInstance();
     Login logInView;
 
     Workplace workplace;
@@ -102,18 +102,17 @@ public class MainWindow {
 
     public Stage getMainWindowStage()
     {
-        databaseModel = new Database();
         logInView = new Login();
 
         ObservableList<Workplace> workplacesList = FXCollections.observableArrayList();
-        workplacesList.addAll(databaseModel.getWorkplaces2(logInView.whoIsLoggedIn().getUserId()));
+        workplacesList.addAll(databaseConnection.getWorkplaces2(logInView.whoIsLoggedIn().getUserId()));
         workplaceCombobox = new ComboBox(workplacesList);
 
        // editComboBox();
 
         workplaceCombobox.setOnAction(event -> {
             Workplace workplace = (Workplace) workplaceCombobox.getSelectionModel().getSelectedItem();
-            Double salaryPerHour = databaseModel.getSalary(workplace.getName());
+            Double salaryPerHour = databaseConnection.getSalary(workplace.getName());
             String salary = String.valueOf(salaryPerHour);
             txtPayPerHour.setText(salary);
         });
@@ -159,26 +158,25 @@ public class MainWindow {
 
 
         btnShow.setOnAction(event -> {
-            databaseModel = new Database();
             logInView = new Login();
             ArrayList<JobDay> list = new ArrayList<JobDay>();
 
             String year = myOwnYear();
             String month = myOwnMonth();
 
-            list = databaseModel.getJobdays(logInView.whoIsLoggedIn().getUserId(),year,month );
+            list = databaseConnection.getJobdays(logInView.whoIsLoggedIn().getUserId(),year,month );
             System.out.println(list.size());
 
             ObservableList<JobDay> data = FXCollections.observableList(list);
             tableView.setItems(data);
 
             Double totalHours;
-            totalHours = databaseModel.getTotalHours(logInView.whoIsLoggedIn().getUserId(),year,month);
+            totalHours = databaseConnection.getTotalHours(logInView.whoIsLoggedIn().getUserId(),year,month);
             String formattedTotalHours = String.valueOf(totalHours);
             txtTotalHoursWorked.setText(formattedTotalHours);
 
             Double moneyEarned;
-            moneyEarned = databaseModel.getMoneyEarned(logInView.whoIsLoggedIn().getUserId(), year, month);
+            moneyEarned = databaseConnection.getMoneyEarned(logInView.whoIsLoggedIn().getUserId(), year, month);
             String formattedMoneyEarned = String.valueOf(moneyEarned);
             txtTotalMoneyEarned.setText(formattedMoneyEarned);
         });
@@ -199,7 +197,6 @@ public class MainWindow {
 
         btnSave.setOnAction(event -> {
             try {
-                    databaseModel = new Database();
                     logInView = new Login();
                     date = Date.valueOf(datePicker.getValue());
 
@@ -217,7 +214,7 @@ public class MainWindow {
 
                     System.out.println(data);
 
-                    databaseModel.addJobDay(logInView.whoIsLoggedIn().getUserId(), car.getName(), date,
+                    databaseConnection.addJobDay(logInView.whoIsLoggedIn().getUserId(), car.getName(), date,
                         howManyHourseWorked, howMuchSalary, partyear, monthpart);
 
                     String a = myOwnYear();
@@ -230,19 +227,19 @@ public class MainWindow {
                         String year = myOwnYear();
                         String month=myOwnMonth();
 
-                        list = databaseModel.getJobdays(logInView.whoIsLoggedIn().getUserId(),year,month );
+                        list = databaseConnection.getJobdays(logInView.whoIsLoggedIn().getUserId(),year,month );
                         System.out.println(list.size());
 
                         ObservableList<JobDay> dataSS = FXCollections.observableList(list);
                         tableView.setItems(dataSS);
 
                         Double bybis;
-                        bybis = databaseModel.getTotalHours(logInView.whoIsLoggedIn().getUserId(),year,month);
+                        bybis = databaseConnection.getTotalHours(logInView.whoIsLoggedIn().getUserId(),year,month);
                             String bybis2 = String.valueOf(bybis);
                             txtTotalHoursWorked.setText(bybis2);
 
                         Double pyzda;
-                        pyzda = databaseModel.getMoneyEarned(logInView.whoIsLoggedIn().getUserId(), year, month);
+                        pyzda = databaseConnection.getMoneyEarned(logInView.whoIsLoggedIn().getUserId(), year, month);
                         String pyzda2 = String.valueOf(pyzda);
                         txtTotalMoneyEarned.setText(pyzda2);
                     }
@@ -418,19 +415,19 @@ public class MainWindow {
     {
         ArrayList<JobDay> list = new ArrayList<JobDay>();
 
-        list = databaseModel.getJobdays(logInView.whoIsLoggedIn().getUserId(),"2016","04" );
+        list = databaseConnection.getJobdays(logInView.whoIsLoggedIn().getUserId(),"2016","04" );
         System.out.println(list.size());
 
         ObservableList<JobDay> dataSS = FXCollections.observableList(list);
         tableView.setItems(dataSS);
 
         Double bybis;
-        bybis = databaseModel.getTotalHours(logInView.whoIsLoggedIn().getUserId(),"2016","04");
+        bybis = databaseConnection.getTotalHours(logInView.whoIsLoggedIn().getUserId(),"2016","04");
         String bybis2 = String.valueOf(bybis);
         txtTotalHoursWorked.setText(bybis2);
 
         Double pyzda;
-        pyzda = databaseModel.getMoneyEarned(logInView.whoIsLoggedIn().getUserId(), "2016", "04");
+        pyzda = databaseConnection.getMoneyEarned(logInView.whoIsLoggedIn().getUserId(), "2016", "04");
         String pyzda2 = String.valueOf(pyzda);
         txtTotalMoneyEarned.setText(pyzda2);
 
@@ -439,7 +436,7 @@ public class MainWindow {
     public void editComboBox()
     {
         ObservableList<Workplace> workplacesList = FXCollections.observableArrayList();
-        ArrayList<Workplace> lis = databaseModel.getWorkplaces2(logInView.whoIsLoggedIn().getUserId());
+        ArrayList<Workplace> lis = databaseConnection.getWorkplaces2(logInView.whoIsLoggedIn().getUserId());
         System.out.println(lis.size());
        // workplaceCombobox = new ComboBox(workplacesList);
 
@@ -470,12 +467,11 @@ public class MainWindow {
 
         addButton.setOnAction(event -> {
             try {
-            databaseModel = new Database();
             logInView = new Login();
             int userId = logInView.whoIsLoggedIn().getUserId();
             double salary = Double.parseDouble(salaryTextField.getText());
 
-            databaseModel.addWorkplace(userId, nameTextField.getText(), salary);
+            databaseConnection.addWorkplace(userId, nameTextField.getText(), salary);
             editComboBox();
             stage.close(); 
             }

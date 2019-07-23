@@ -10,15 +10,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-/**
- * Created by Edgaras on 4/9/2016.
- */
+
 public class Database {
 
+    private static Database databaseInstance = null;
     private java.sql.Connection conn = null;
 
-    public Database() {
-
+    private Database() 
+    {
         String DB_URL = "jdbc:mysql://localhost/jobtrack";
         String USER = "root";
         String PASS = "root";
@@ -27,6 +26,14 @@ public class Database {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+    
+    public static Database getDBInstance()
+    {
+        if(databaseInstance == null)
+            databaseInstance = new Database();
+        
+        return databaseInstance;
     }
 
     public void addNewUser(String fullName, String userName, String password) {
@@ -44,7 +51,6 @@ public class Database {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
     }
 
     public User retrieveUserIfAllowedToLogIn(String userName, String password) {
@@ -259,9 +265,6 @@ public class Database {
         }
         return out;
     }
-
-
-
 }
 
 
