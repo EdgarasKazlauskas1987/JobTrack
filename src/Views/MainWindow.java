@@ -1,6 +1,7 @@
 package Views;
 
 import Controller.Database;
+import Controller.MainWindowController;
 import Model.JobDay;
 import Model.Workplace;
 import javafx.collections.FXCollections;
@@ -23,6 +24,7 @@ public class MainWindow {
 
     AddWorkplace newWorkplace;
     Database databaseConnection = Database.getDBInstance();
+    MainWindowController mainWindowController;
     Login logInView;
 
     Workplace workplace;
@@ -41,7 +43,8 @@ public class MainWindow {
     Button btnShow = new Button("Show");
 
     ComboBox workplaceCombobox;
-    ComboBox<Integer> yearCombobox;
+    //ComboBox<Integer> yearCombobox;
+    ComboBox<String> yearCombobox;
     ComboBox<String> monthCombobox;
 
     TextField txtHoursWorked = new TextField();
@@ -132,11 +135,13 @@ public class MainWindow {
         borderPane = new BorderPane();
         borderPane.setLeft(vBoxLeft);
 
-        ObservableList<Integer> yearList  = FXCollections.observableArrayList();
-
-        yearList.addAll(2016, 2017, 2018);
-        yearCombobox = new ComboBox<>(yearList);
-        yearCombobox.setValue(2016);
+        //ObservableList<Integer> yearList  = FXCollections.observableArrayList();
+        //yearList.addAll(2016, 2017, 2018);
+        //yearCombobox = new ComboBox<>(yearList);
+        mainWindowController = new MainWindowController();
+        yearCombobox = new ComboBox<>(mainWindowController.populateYear());
+        //set value current year
+        yearCombobox.setValue("2016");
 
         ObservableList<String> monthList  = FXCollections.observableArrayList();
         monthList.addAll("January", "February", "March", "April", "May", "June", "July",
@@ -149,7 +154,8 @@ public class MainWindow {
             logInView = new Login();
             ArrayList<JobDay> list = new ArrayList<JobDay>();
 
-            String year = myOwnYear();
+            //String year = myOwnYear();
+            String year = yearCombobox.getSelectionModel().getSelectedItem();
             String month = myOwnMonth();
 
             list = databaseConnection.getJobdays(logInView.whoIsLoggedIn().getUserId(),year,month );
@@ -198,14 +204,16 @@ public class MainWindow {
                     databaseConnection.addJobDay(logInView.whoIsLoggedIn().getUserId(), workplace.getName(), date,
                         hoursWorked, payPerHour, yearPart, monthPart);
 
-                    String a = myOwnYear();
+                    //String a = myOwnYear();
+                    String a = yearCombobox.getSelectionModel().getSelectedItem();
                     String b = myOwnMonth();
 
                     if (!a.equals(null) && !b.equals(null))
                     {
                         ArrayList<JobDay> list = new ArrayList<JobDay>();
 
-                        String year = myOwnYear();
+                        //String year = myOwnYear();
+                        String year = yearCombobox.getSelectionModel().getSelectedItem();
                         String month = myOwnMonth();
 
                         list = databaseConnection.getJobdays(logInView.whoIsLoggedIn().getUserId(),year,month );
@@ -290,32 +298,32 @@ public class MainWindow {
         return stgMainWindow;
     }
 
-    public String myOwnYear()
-    {
-        String year = "";
-        // String wholeDate = year+"-"+month+"-"+"10";
-
-        int yearFromBox =  yearCombobox.getSelectionModel().getSelectedItem();
-       // String monthFromBox = monthCombobox.getSelectionModel().getSelectedItem();
-
-        if (yearFromBox == 0)
-        {
-            year = "2016";
-        }
-        else if (yearFromBox == 2017){
-            year = "2017";
-        }
-        else if (yearFromBox == 2018)
-        {
-            year = "2018";
-        }
-        else {
-            year = "2016";
-        }
-        
-        String wholeDate = year;
-        return wholeDate;
-    }
+//    public String myOwnYear()
+//    {
+//        String year = "";
+//        // String wholeDate = year+"-"+month+"-"+"10";
+//
+//        int yearFromBox =  yearCombobox.getSelectionModel().getSelectedItem();
+//       // String monthFromBox = monthCombobox.getSelectionModel().getSelectedItem();
+//
+//        if (yearFromBox == 0)
+//        {
+//            year = "2016";
+//        }
+//        else if (yearFromBox == 2017){
+//            year = "2017";
+//        }
+//        else if (yearFromBox == 2018)
+//        {
+//            year = "2018";
+//        }
+//        else {
+//            year = "2016";
+//        }
+//        
+//        String wholeDate = year;
+//        return wholeDate;
+//    }
 
     public String myOwnMonth()
     {
