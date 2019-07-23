@@ -302,7 +302,7 @@ public class MainWindow {
         vBoxLeft.setSpacing(15);
         vBoxLeft.setAlignment(Pos.BOTTOM_CENTER);
 
-      btnSave.setStyle("-fx-font-size: 25px; -fx-background-color: powderblue; -fx-border-color: black");
+        btnSave.setStyle("-fx-font-size: 25px; -fx-background-color: powderblue; -fx-border-color: black");
         btnAddNewWorkplace.setStyle("-fx-font-size: 25px; -fx-background-color: powderblue; -fx-border-color: black");
         btnBack.setStyle("-fx-font-size: 25px; -fx-background-color: powderblue; -fx-border-color: black");
 
@@ -477,7 +477,8 @@ public class MainWindow {
 
             databaseModel.addWorkplace(userId, nameTextField.getText(), salary);
             editComboBox();
-            stage.close(); }
+            stage.close(); 
+            }
 
             catch (NumberFormatException e)
             {

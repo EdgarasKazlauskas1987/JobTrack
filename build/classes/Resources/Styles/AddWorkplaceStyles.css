@@ -8,3 +8,13 @@ and open the template in the editor.
     Author     : Edgaras
 */
 
+.txt-addWorkplace{
+    -fx-font-size: 30px;
+    -fx-border-color: black;
+}
+
+.btn-addWorkplace{
+    -fx-font-size: 37px;
+    -fx-background-color: powderblue;
+    -fx-border-color: black;
+}

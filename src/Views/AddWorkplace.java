@@ -1,6 +1,5 @@
 package Views;
 
-import Controller.Database;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -10,72 +9,93 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import Controller.Database;
+import javafx.scene.control.Alert;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
-/**
- * Created by Edgaras on 4/9/2016.
- */
+
 public class AddWorkplace {
 
     Database databaseModel;
     Login logInView;
     MainWindow mainWindowView;
 
-    Label workplacenameLabel;
-    Label salaryLabel;
+    Label lblWorkplaceName = new Label("Name of workplace");
+    Label lblSalary = new Label("dkk/hour");
 
-    TextField nameTextField;
-    TextField salaryTextField;
+    TextField txtWorkplaceName = new TextField();
+    TextField txtSalary = new TextField();
 
-    Button addButton;
-    Button backButton;
+    Button btnAdd = new Button("Add");
+    Button btnBack = new Button("Back");
+    
+    ImageView imgView;
+    Image imgLogo = new Image(getClass().getResourceAsStream("/logo.png"));
 
-    Stage stage;
+    Stage stgAddWorkplace;
 
-    Scene scene;
+    Scene scnAddWorkplace;
 
-    VBox vBox;
-    HBox hBox;
+    VBox vBoxLabelsTextfields;
+    HBox hBoxButtons;
 
     public Stage getNewWorkplaceStage()
     {
-        workplacenameLabel = new Label("Name of workplace");
-        salaryLabel = new Label("dkk/hour");
+        txtWorkplaceName.setPromptText("Workplace name");
+        txtWorkplaceName.getStyleClass().add("txt-addWorkplace");
+        
+        txtSalary.setPromptText("dkk/hour");
+        txtSalary.getStyleClass().add("txt-addWorkplace");
+        
+        btnAdd.getStyleClass().add("btn-addWorkplace");
+        btnBack.getStyleClass().add("btn-addWorkplace");
+        
+        imgView = new ImageView();
+        imgView.setImage(imgLogo);
+        
+        hBoxButtons = new HBox();
+        hBoxButtons.getChildren().addAll(btnAdd, btnBack);
 
-        nameTextField = new TextField();
-        salaryTextField = new TextField();
-
-        addButton = new Button("Add");
-        backButton = new Button("Back");
-
-        backButton.setOnAction(event1 -> {
-            mainWindowView = new MainWindow();
-            mainWindowView.editComboBox();
+        vBoxLabelsTextfields = new VBox();
+        vBoxLabelsTextfields.getChildren().addAll(lblWorkplaceName, txtWorkplaceName, lblSalary, txtSalary, hBoxButtons);
+        
+        btnBack.setOnAction(event -> {
+            //mainWindowView = new MainWindow();
+            //mainWindowView.editComboBox();
+            stgAddWorkplace.close();
         });
 
-        addButton.setOnAction(event -> {
-            databaseModel = new Database();
-            logInView = new Login();
-            int userId = logInView.whoIsLoggedIn().getUserId();
-            double salary = Double.parseDouble(salaryTextField.getText());
+        btnAdd.setOnAction(event -> {
+            try 
+            {
+                databaseModel = new Database();
+                logInView = new Login();
+                int userId = logInView.whoIsLoggedIn().getUserId();
+                double salary = Double.parseDouble(txtSalary.getText());
 
-            databaseModel.addWorkplace(userId, nameTextField.getText(), salary);
-            mainWindowView = new MainWindow();
-           // mainWindowView.editComboBox();
+                databaseModel.addWorkplace(userId, txtWorkplaceName.getText(), salary);
+                //editComboBox();
+                stgAddWorkplace.close();  
+                //mainWindowView = new MainWindow();
+                //mainWindowView.editComboBox();
+            }
+            catch (NumberFormatException e)
+            {
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Warning Dialog");
+                alert.setHeaderText("Please fill all the information!");
+                alert.showAndWait();
+            }
         });
+        
 
-        hBox = new HBox();
-        hBox.getChildren().addAll(addButton, backButton);
+        scnAddWorkplace = new Scene(vBoxLabelsTextfields, 300, 300);
+        scnAddWorkplace.getStylesheets().add("Resources/Styles/AddWorkplaceStyles.css");
 
-        vBox = new VBox();
-        vBox.getChildren().addAll(workplacenameLabel, nameTextField, salaryLabel, salaryTextField,
-                hBox);
+        stgAddWorkplace = new Stage();
+        stgAddWorkplace.setScene(scnAddWorkplace);
+        stgAddWorkplace.show();
 
-        scene = new Scene(vBox, 300, 300);
-
-        stage = new Stage();
-        stage.setScene(scene);
-        stage.show();
-
-        return stage;
+        return stgAddWorkplace;
     }
 }
