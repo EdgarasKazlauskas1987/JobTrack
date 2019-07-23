@@ -161,8 +161,6 @@ public class Database {
         return out;
     }
 
-
-
     public void addJobDay(int userId, String workplacename, java.sql.Date dates, int hourseWorked, double payperhour,
     String yearpart, String monthpart)
     {
@@ -187,7 +185,6 @@ public class Database {
         {
             e.printStackTrace();
         }
-
     }
 
     public ArrayList<JobDay> getJobdays(int userId, String year, String month ) {

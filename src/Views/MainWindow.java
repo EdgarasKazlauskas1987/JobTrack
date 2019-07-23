@@ -4,6 +4,7 @@ import Controller.Database;
 import Controller.MainWindowController;
 import Model.JobDay;
 import Model.Workplace;
+import Utilities.Utilities;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
@@ -25,6 +26,7 @@ public class MainWindow {
     AddWorkplace newWorkplace;
     Database databaseConnection = Database.getDBInstance();
     MainWindowController mainWindowController;
+    Utilities utilities = new Utilities();
     Login logInView;
 
     Workplace workplace;
@@ -43,7 +45,6 @@ public class MainWindow {
     Button btnShow = new Button("Show");
 
     ComboBox workplaceCombobox;
-    //ComboBox<Integer> yearCombobox;
     ComboBox<String> yearCombobox;
     ComboBox<String> monthCombobox;
 
@@ -135,28 +136,23 @@ public class MainWindow {
         borderPane = new BorderPane();
         borderPane.setLeft(vBoxLeft);
 
-        //ObservableList<Integer> yearList  = FXCollections.observableArrayList();
-        //yearList.addAll(2016, 2017, 2018);
-        //yearCombobox = new ComboBox<>(yearList);
         mainWindowController = new MainWindowController();
         yearCombobox = new ComboBox<>(mainWindowController.populateYear());
-        //set value current year
-        yearCombobox.setValue("2016");
+        yearCombobox.setValue(utilities.getCurrentYear());
 
         ObservableList<String> monthList  = FXCollections.observableArrayList();
         monthList.addAll("January", "February", "March", "April", "May", "June", "July",
                 "August", "September", "October", "November", "December" );
 
         monthCombobox = new ComboBox<>(monthList);
-        monthCombobox.setValue("April");
+        monthCombobox.setValue(utilities.getCurrentMonth());
 
         btnShow.setOnAction(event -> {
             logInView = new Login();
             ArrayList<JobDay> list = new ArrayList<JobDay>();
 
-            //String year = myOwnYear();
             String year = yearCombobox.getSelectionModel().getSelectedItem();
-            String month = myOwnMonth();
+            String month = mainWindowController.getMonth(monthCombobox.getSelectionModel().getSelectedItem());
 
             list = databaseConnection.getJobdays(logInView.whoIsLoggedIn().getUserId(),year,month );
 
@@ -204,17 +200,16 @@ public class MainWindow {
                     databaseConnection.addJobDay(logInView.whoIsLoggedIn().getUserId(), workplace.getName(), date,
                         hoursWorked, payPerHour, yearPart, monthPart);
 
-                    //String a = myOwnYear();
                     String a = yearCombobox.getSelectionModel().getSelectedItem();
-                    String b = myOwnMonth();
+                    String b = mainWindowController.getMonth(monthCombobox.getSelectionModel().getSelectedItem());
 
                     if (!a.equals(null) && !b.equals(null))
                     {
                         ArrayList<JobDay> list = new ArrayList<JobDay>();
 
-                        //String year = myOwnYear();
                         String year = yearCombobox.getSelectionModel().getSelectedItem();
-                        String month = myOwnMonth();
+                        String month = mainWindowController.getMonth(monthCombobox.getSelectionModel().getSelectedItem());
+                        //String month = myOwnMonth();
 
                         list = databaseConnection.getJobdays(logInView.whoIsLoggedIn().getUserId(),year,month );
 
@@ -257,7 +252,6 @@ public class MainWindow {
         });
 
         btnAddNewWorkplace.setOnAction(event -> {
-            //getNewWorkplaceStage();
             newWorkplace = new AddWorkplace();
             newWorkplace.getNewWorkplaceStage();
             
@@ -298,100 +292,6 @@ public class MainWindow {
         return stgMainWindow;
     }
 
-//    public String myOwnYear()
-//    {
-//        String year = "";
-//        // String wholeDate = year+"-"+month+"-"+"10";
-//
-//        int yearFromBox =  yearCombobox.getSelectionModel().getSelectedItem();
-//       // String monthFromBox = monthCombobox.getSelectionModel().getSelectedItem();
-//
-//        if (yearFromBox == 0)
-//        {
-//            year = "2016";
-//        }
-//        else if (yearFromBox == 2017){
-//            year = "2017";
-//        }
-//        else if (yearFromBox == 2018)
-//        {
-//            year = "2018";
-//        }
-//        else {
-//            year = "2016";
-//        }
-//        
-//        String wholeDate = year;
-//        return wholeDate;
-//    }
-
-    public String myOwnMonth()
-    {
-        String month  = "";
-
-        String monthFromBox =  monthCombobox.getSelectionModel().getSelectedItem();
-
-        if (monthFromBox.equals("January"))
-        {
-            month = "01";
-        }
-        else if (monthFromBox.equals("February")){
-            month = "02";
-        }
-        else if (monthFromBox.equals("March"))
-        {
-            month = "03";
-        }
-
-        else if (monthFromBox.equals("April"))
-        {
-            month = "04";
-        }
-
-        else if (monthFromBox.equals("May"))
-        {
-            month = "05";
-        }
-
-        else if (monthFromBox.equals("June"))
-        {
-            month = "06";
-        }
-
-        else if (monthFromBox.equals("July"))
-        {
-            month = "07";
-        }
-
-        else if (monthFromBox.equals("August"))
-        {
-            month = "08";
-        }
-
-        else if (monthFromBox.equals("September"))
-        {
-            month = "09";
-        }
-
-        else if (monthFromBox.equals("October"))
-        {
-            month = "10";
-        }
-
-        else if (monthFromBox.equals("November"))
-        {
-            month = "11";
-        }
-
-        else if (monthFromBox.equals("December"))
-        {
-            month = "12";
-        }
-
-        String wholeDate = month;
-        return wholeDate;
-    }
-
     public void updateTable()
     {
         ArrayList<JobDay> list = new ArrayList<JobDay>();
@@ -424,63 +324,5 @@ public class MainWindow {
         workplaceCombobox.setItems(workplaces);
     }
 
-//    public Stage getNewWorkplaceStage()
-//    {
-//        nameTextField = new TextField();
-//        nameTextField.setPromptText("Workplace name");
-//        nameTextField.setStyle("-fx-font-size: 30px; -fx-border-color: black");
-//        salaryTextField = new TextField();
-//        salaryTextField.setPromptText("dkk/hour");
-//        salaryTextField.setStyle("-fx-font-size: 30px; -fx-border-color: black");
-//
-//        addButton = new Button("Add");
-//        addButton.setStyle("-fx-font-size: 37px; -fx-background-color: powderblue; -fx-border-color: black");
-//        btnBack = new Button("Back");
-//        btnBack.setStyle("-fx-font-size: 37px; -fx-background-color: powderblue; -fx-border-color: black");
-//
-//        btnBack.setOnAction(event1 -> {
-//            stage.close();
-//        });
-//
-//        addButton.setOnAction(event -> {
-//            try {
-//            logInView = new Login();
-//            int userId = logInView.whoIsLoggedIn().getUserId();
-//            double salary = Double.parseDouble(salaryTextField.getText());
-//
-//            databaseConnection.addWorkplace(userId, nameTextField.getText(), salary);
-//            editComboBox();
-//            stage.close(); 
-//            }
-//
-//            catch (NumberFormatException e)
-//            {
-//                Alert alert = new Alert(Alert.AlertType.WARNING);
-//                alert.setTitle("Warning Dialog");
-//                alert.setHeaderText("Please fill all the information!");
-//                alert.showAndWait();
-//            }
-//        });
-//
-//        hBox = new HBox();
-//        hBox.getChildren().addAll(addButton, btnBack);
-//
-//        selectedImage2 = new ImageView();
-//        image2 = new Image(Login.class.getResourceAsStream("pic2.jpg"));
-//        selectedImage2.setImage(image2);
-//
-//        vBox = new VBox();
-//        vBox.getChildren().addAll( selectedImage2, nameTextField, salaryTextField,
-//                hBox);
-//
-//        vBox.setStyle("-fx-background-color: ghostwhite");
-//
-//        scene = new Scene(vBox, 248, 316);
-//
-//        stage = new Stage();
-//        stage.setScene(scene);
-//        stage.show();
-//
-//        return stage;
-//    }
+
 }
