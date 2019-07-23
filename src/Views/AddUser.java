@@ -42,17 +42,9 @@ public class AddUser {
 
         btnBack.getStyleClass().add("btn-addUser");
         btnSave.getStyleClass().add("btn-addUser");
-
-        btnSave.setOnAction(event -> {
-            databaseConnection.addNewUser(txtFullname.getText(), txtUsername.getText(),
-                txtPassword.getText());
-
-            stage.close();
-        });
-
-        btnBack.setOnAction(event -> {
-           stage.close();
-        });
+        
+        setButtonSaveOnAction();
+        setButtonBackOnAction();
 
         hBoxNewUser.getChildren().addAll(btnBack, btnSave);
         vBoxNewUser.getChildren().addAll(txtFullname,
@@ -64,5 +56,22 @@ public class AddUser {
         stage.show();
 
         return stage;
+    }
+    
+    private void setButtonSaveOnAction()
+    {
+        btnSave.setOnAction(event -> {
+        databaseConnection.addNewUser(txtFullname.getText(), txtUsername.getText(),
+            txtPassword.getText());
+
+        stage.close();
+        });
+    }
+    
+    private void setButtonBackOnAction()
+    {
+        btnBack.setOnAction(event -> {
+        stage.close();
+        });
     }
 }

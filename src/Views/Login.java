@@ -2,7 +2,6 @@ package Views;
 
 import Model.User;
 import javafx.application.Application;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
@@ -68,34 +67,43 @@ public class Login extends Application
 
         loginScene = new Scene(vBoxLogin, 232, 350);
         loginScene.getStylesheets().add("Resources/Styles/LoginStyles.css");
-
-        btnNewUser.setOnAction(event -> {
-            newAccountView = new AddUser();
-            newAccountView.getNewAccountStage();
-        });
-
-        btnLogin.setOnAction(event -> {
-            String userName = txtUsername.getText();
-            String password = ptxtPassword.getText();
-
-            user = databaseConnetion.retrieveUserIfAllowedToLogIn(userName, password);
-
-            if (user == null)
-            {
-                Alert alert = new Alert(Alert.AlertType.WARNING);
-                alert.setTitle("Warning Dialog");
-                alert.setHeaderText("Username or password is wrong!");
-                alert.showAndWait();
-            }
-            else 
-            {
-                mainWindowView = new MainWindow();
-                mainWindowView.getMainWindowStage();
-                mainWindowView.updateTable();
-            }
-        });
+        
+        setButtonNewUserOnAction();
+        setButtonLoginOnAction();
         
         return loginScene;
+    }
+    
+    private void setButtonNewUserOnAction()
+    {
+        btnNewUser.setOnAction(event -> {
+        newAccountView = new AddUser();
+        newAccountView.getNewAccountStage();
+        });
+    }
+    
+    private void setButtonLoginOnAction()
+    {
+        btnLogin.setOnAction(event -> {
+        String userName = txtUsername.getText();
+        String password = ptxtPassword.getText();
+
+        user = databaseConnetion.retrieveUserIfAllowedToLogIn(userName, password);
+
+        if (user == null)
+        {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Warning Dialog");
+            alert.setHeaderText("Username or password is wrong!");
+            alert.showAndWait();
+        }
+        else 
+        {
+            mainWindowView = new MainWindow();
+            mainWindowView.getMainWindowStage();
+            mainWindowView.updateTable();
+        }
+        });
     }
 
     public User whoIsLoggedIn()

@@ -59,34 +59,8 @@ public class AddWorkplace {
         vBoxLabelsTextfields = new VBox();
         vBoxLabelsTextfields.getChildren().addAll(lblWorkplaceName, txtWorkplaceName, lblSalary, txtSalary, hBoxButtons);
         
-        btnBack.setOnAction(event -> {
-            //mainWindowView = new MainWindow();
-            //mainWindowView.editComboBox();
-            stgAddWorkplace.close();
-        });
-
-        btnAdd.setOnAction(event -> {
-            try 
-            {
-                logInView = new Login();
-                int userId = logInView.whoIsLoggedIn().getUserId();
-                double salary = Double.parseDouble(txtSalary.getText());
-
-                databaseConnection.addWorkplace(userId, txtWorkplaceName.getText(), salary);
-                //editComboBox();
-                stgAddWorkplace.close();  
-                //mainWindowView = new MainWindow();
-                //mainWindowView.editComboBox();
-            }
-            catch (NumberFormatException e)
-            {
-                Alert alert = new Alert(Alert.AlertType.WARNING);
-                alert.setTitle("Warning Dialog");
-                alert.setHeaderText("Please fill all the information!");
-                alert.showAndWait();
-            }
-        });
-        
+        setButtonAddOnAction();
+        setButtonBackOnAction();
 
         scnAddWorkplace = new Scene(vBoxLabelsTextfields, 300, 300);
         scnAddWorkplace.getStylesheets().add("Resources/Styles/AddWorkplaceStyles.css");
@@ -96,5 +70,34 @@ public class AddWorkplace {
         stgAddWorkplace.show();
 
         return stgAddWorkplace;
+    }
+    
+    private void setButtonAddOnAction()
+    {
+        btnAdd.setOnAction(event -> {
+            try 
+            {
+                logInView = new Login();
+                int userId = logInView.whoIsLoggedIn().getUserId();
+                double salary = Double.parseDouble(txtSalary.getText());
+
+                databaseConnection.addWorkplace(userId, txtWorkplaceName.getText(), salary);
+                stgAddWorkplace.close();  
+            }
+            catch (NumberFormatException e)
+            {
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Warning Dialog");
+                alert.setHeaderText("Please fill all the information!");
+                alert.showAndWait();
+            }
+        });
+    }
+    
+    private void setButtonBackOnAction()
+    {
+        btnBack.setOnAction(event -> {
+        stgAddWorkplace.close();
+        });
     }
 }

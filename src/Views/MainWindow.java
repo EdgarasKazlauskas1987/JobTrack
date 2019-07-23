@@ -54,9 +54,7 @@ public class MainWindow {
     TableView<JobDay> tableView;
 
     BorderPane borderPane;
-
     Scene scnMainWindow;
-
     Stage stgMainWindow;
 
     VBox vBoxLeft = new VBox();
@@ -77,8 +75,8 @@ public class MainWindow {
 
     ArrayList<Workplace> workplaces;
 
-    ImageView selectedImage3;
-    Image image3;
+    ImageView selectedImage;
+    Image imageLogo = new Image(getClass().getResourceAsStream("/logo.png"));
 
     Label workplacenameLabel;
     Label salaryLabel;
@@ -89,16 +87,9 @@ public class MainWindow {
     Button addButton;
     Button backButton2;
 
-    Stage stage;
-
-    Scene scene;
-
     VBox vBox;
     HBox hBox;
     HBox hBoxForTop;
-
-    ImageView selectedImage2;
-    Image image2;
 
     public Stage getMainWindowStage()
     {
@@ -107,8 +98,6 @@ public class MainWindow {
         ObservableList<Workplace> workplacesList = FXCollections.observableArrayList();
         workplacesList.addAll(databaseConnection.getWorkplaces2(logInView.whoIsLoggedIn().getUserId()));
         workplaceCombobox = new ComboBox(workplacesList);
-
-       // editComboBox();
 
         workplaceCombobox.setOnAction(event -> {
             Workplace workplace = (Workplace) workplaceCombobox.getSelectionModel().getSelectedItem();
@@ -156,7 +145,6 @@ public class MainWindow {
         monthCombobox = new ComboBox<>(monthList);
         monthCombobox.setValue("April");
 
-
         btnShow.setOnAction(event -> {
             logInView = new Login();
             ArrayList<JobDay> list = new ArrayList<JobDay>();
@@ -165,7 +153,6 @@ public class MainWindow {
             String month = myOwnMonth();
 
             list = databaseConnection.getJobdays(logInView.whoIsLoggedIn().getUserId(),year,month );
-            System.out.println(list.size());
 
             ObservableList<JobDay> data = FXCollections.observableList(list);
             tableView.setItems(data);
@@ -200,22 +187,16 @@ public class MainWindow {
                     logInView = new Login();
                     date = Date.valueOf(datePicker.getValue());
 
-                    Workplace car = (Workplace) workplaceCombobox.getSelectionModel().getSelectedItem();
-                    int howManyHourseWorked = Integer.parseInt(txtHoursWorked.getText());
-                    double howMuchSalary = Double.parseDouble(txtPayPerHour.getText());
+                    Workplace workplace = (Workplace) workplaceCombobox.getSelectionModel().getSelectedItem();
+                    int hoursWorked = Integer.parseInt(txtHoursWorked.getText());
+                    double payPerHour = Double.parseDouble(txtPayPerHour.getText());
 
                     String data = String.valueOf(datePicker.getValue());
-                    String partyear = data.substring(0, 4);
-                    System.out.println(partyear);
+                    String yearPart = data.substring(0, 4);
+                    String monthPart = data.substring(5, 7);
 
-                    String data2 = String.valueOf(datePicker.getValue());
-                    String monthpart = data2.substring(5, 7);
-                    System.out.println(monthpart);
-
-                    System.out.println(data);
-
-                    databaseConnection.addJobDay(logInView.whoIsLoggedIn().getUserId(), car.getName(), date,
-                        howManyHourseWorked, howMuchSalary, partyear, monthpart);
+                    databaseConnection.addJobDay(logInView.whoIsLoggedIn().getUserId(), workplace.getName(), date,
+                        hoursWorked, payPerHour, yearPart, monthPart);
 
                     String a = myOwnYear();
                     String b = myOwnMonth();
@@ -225,29 +206,26 @@ public class MainWindow {
                         ArrayList<JobDay> list = new ArrayList<JobDay>();
 
                         String year = myOwnYear();
-                        String month=myOwnMonth();
+                        String month = myOwnMonth();
 
                         list = databaseConnection.getJobdays(logInView.whoIsLoggedIn().getUserId(),year,month );
-                        System.out.println(list.size());
 
                         ObservableList<JobDay> dataSS = FXCollections.observableList(list);
                         tableView.setItems(dataSS);
 
-                        Double bybis;
-                        bybis = databaseConnection.getTotalHours(logInView.whoIsLoggedIn().getUserId(),year,month);
-                            String bybis2 = String.valueOf(bybis);
-                            txtTotalHoursWorked.setText(bybis2);
+                        Double totalHoursWorked;
+                        totalHoursWorked = databaseConnection.getTotalHours(logInView.whoIsLoggedIn().getUserId(),year,month);
+                        txtTotalHoursWorked.setText(String.valueOf(totalHoursWorked));
 
-                        Double pyzda;
-                        pyzda = databaseConnection.getMoneyEarned(logInView.whoIsLoggedIn().getUserId(), year, month);
-                        String pyzda2 = String.valueOf(pyzda);
-                        txtTotalMoneyEarned.setText(pyzda2);
+                        Double moneyEarned;
+                        moneyEarned = databaseConnection.getMoneyEarned(logInView.whoIsLoggedIn().getUserId(), year, month);
+                        txtTotalMoneyEarned.setText(String.valueOf(moneyEarned));
                     }
 
-            else {
-                        
-                updateTable(); 
-                 } 
+                    else
+                    {       
+                        updateTable(); 
+                    } 
             }
 
             catch (NullPointerException e)
@@ -265,7 +243,6 @@ public class MainWindow {
                 alert.showAndWait();
             }
         });
-
 
         btnBack.setOnAction(event -> {
           stgMainWindow.close();
@@ -291,21 +268,21 @@ public class MainWindow {
         vBox4 = new VBox();
         vBox4.getChildren().addAll(lblPayHour, txtPayPerHour);
 
-        selectedImage3 = new ImageView();
-        //image3 = new Image(LogInView.class.getResourceAsStream("pic2.jpg"));
-        //selectedImage3.setImage(image3);
+        selectedImage = new ImageView();
+        selectedImage.setImage(imageLogo);
 
-        vBoxLeft.getChildren().addAll(selectedImage3, vBox1, vBox2, vBox3, vBox4);
+        vBoxLeft.getChildren().addAll(selectedImage, vBox1, vBox2, vBox3, vBox4);
         vBoxLeft.setSpacing(15);
         vBoxLeft.setAlignment(Pos.BOTTOM_CENTER);
 
-        btnSave.setStyle("-fx-font-size: 25px; -fx-background-color: powderblue; -fx-border-color: black");
-        btnAddNewWorkplace.setStyle("-fx-font-size: 25px; -fx-background-color: powderblue; -fx-border-color: black");
-        btnBack.setStyle("-fx-font-size: 25px; -fx-background-color: powderblue; -fx-border-color: black");
+        btnSave.getStyleClass().add("btn-save");
+        btnAddNewWorkplace.getStyleClass().add("btn-addNewWorkplace");
+        btnBack.getStyleClass().add("btn-back");
 
         borderPane.setStyle("-fx-background-color: ghostwhite");
 
         scnMainWindow = new Scene(borderPane, 605, 400);
+        scnMainWindow.getStylesheets().add("Resources/Styles/MainWindowStyles.css");
         stgMainWindow = new Stage();
 
         stgMainWindow.setScene(scnMainWindow);
@@ -316,8 +293,6 @@ public class MainWindow {
     public String myOwnYear()
     {
         String year = "";
-
-
         // String wholeDate = year+"-"+month+"-"+"10";
 
         int yearFromBox =  yearCombobox.getSelectionModel().getSelectedItem();
@@ -337,11 +312,9 @@ public class MainWindow {
         else {
             year = "2016";
         }
-
-
+        
         String wholeDate = year;
         return wholeDate;
-
     }
 
     public String myOwnMonth()
@@ -416,94 +389,90 @@ public class MainWindow {
         ArrayList<JobDay> list = new ArrayList<JobDay>();
 
         list = databaseConnection.getJobdays(logInView.whoIsLoggedIn().getUserId(),"2016","04" );
-        System.out.println(list.size());
 
         ObservableList<JobDay> dataSS = FXCollections.observableList(list);
         tableView.setItems(dataSS);
 
-        Double bybis;
-        bybis = databaseConnection.getTotalHours(logInView.whoIsLoggedIn().getUserId(),"2016","04");
-        String bybis2 = String.valueOf(bybis);
-        txtTotalHoursWorked.setText(bybis2);
+        Double totalHours;
+        totalHours = databaseConnection.getTotalHours(logInView.whoIsLoggedIn().getUserId(),"2016","04");
+        txtTotalHoursWorked.setText(String.valueOf(totalHours));
 
-        Double pyzda;
-        pyzda = databaseConnection.getMoneyEarned(logInView.whoIsLoggedIn().getUserId(), "2016", "04");
-        String pyzda2 = String.valueOf(pyzda);
-        txtTotalMoneyEarned.setText(pyzda2);
-
+        Double moneyEarned;
+        moneyEarned = databaseConnection.getMoneyEarned(logInView.whoIsLoggedIn().getUserId(), "2016", "04");
+        txtTotalMoneyEarned.setText(String.valueOf(moneyEarned));
     }
 
-    public void editComboBox()
+    public void updateComboBox()
     {
-        ObservableList<Workplace> workplacesList = FXCollections.observableArrayList();
+        ObservableList<Workplace> workplaces = FXCollections.observableArrayList();
         ArrayList<Workplace> lis = databaseConnection.getWorkplaces2(logInView.whoIsLoggedIn().getUserId());
         System.out.println(lis.size());
        // workplaceCombobox = new ComboBox(workplacesList);
 
         for (int i = 0; i < lis.size(); i++)
         {
-            workplacesList.add(lis.get(i));
+            workplaces.add(lis.get(i));
         }
-        workplaceCombobox.setItems(workplacesList);
+        workplaceCombobox.setItems(workplaces);
     }
 
-    public Stage getNewWorkplaceStage()
-    {
-        nameTextField = new TextField();
-        nameTextField.setPromptText("Workplace name");
-        nameTextField.setStyle("-fx-font-size: 30px; -fx-border-color: black");
-        salaryTextField = new TextField();
-        salaryTextField.setPromptText("dkk/hour");
-        salaryTextField.setStyle("-fx-font-size: 30px; -fx-border-color: black");
-
-        addButton = new Button("Add");
-        addButton.setStyle("-fx-font-size: 37px; -fx-background-color: powderblue; -fx-border-color: black");
-        btnBack = new Button("Back");
-        btnBack.setStyle("-fx-font-size: 37px; -fx-background-color: powderblue; -fx-border-color: black");
-
-        btnBack.setOnAction(event1 -> {
-            stage.close();
-        });
-
-        addButton.setOnAction(event -> {
-            try {
-            logInView = new Login();
-            int userId = logInView.whoIsLoggedIn().getUserId();
-            double salary = Double.parseDouble(salaryTextField.getText());
-
-            databaseConnection.addWorkplace(userId, nameTextField.getText(), salary);
-            editComboBox();
-            stage.close(); 
-            }
-
-            catch (NumberFormatException e)
-            {
-                Alert alert = new Alert(Alert.AlertType.WARNING);
-                alert.setTitle("Warning Dialog");
-                alert.setHeaderText("Please fill all the information!");
-                alert.showAndWait();
-            }
-        });
-
-        hBox = new HBox();
-        hBox.getChildren().addAll(addButton, btnBack);
-
-        selectedImage2 = new ImageView();
-        image2 = new Image(Login.class.getResourceAsStream("pic2.jpg"));
-        selectedImage2.setImage(image2);
-
-        vBox = new VBox();
-        vBox.getChildren().addAll( selectedImage2, nameTextField, salaryTextField,
-                hBox);
-
-        vBox.setStyle("-fx-background-color: ghostwhite");
-
-        scene = new Scene(vBox, 248, 316);
-
-        stage = new Stage();
-        stage.setScene(scene);
-        stage.show();
-
-        return stage;
-    }
+//    public Stage getNewWorkplaceStage()
+//    {
+//        nameTextField = new TextField();
+//        nameTextField.setPromptText("Workplace name");
+//        nameTextField.setStyle("-fx-font-size: 30px; -fx-border-color: black");
+//        salaryTextField = new TextField();
+//        salaryTextField.setPromptText("dkk/hour");
+//        salaryTextField.setStyle("-fx-font-size: 30px; -fx-border-color: black");
+//
+//        addButton = new Button("Add");
+//        addButton.setStyle("-fx-font-size: 37px; -fx-background-color: powderblue; -fx-border-color: black");
+//        btnBack = new Button("Back");
+//        btnBack.setStyle("-fx-font-size: 37px; -fx-background-color: powderblue; -fx-border-color: black");
+//
+//        btnBack.setOnAction(event1 -> {
+//            stage.close();
+//        });
+//
+//        addButton.setOnAction(event -> {
+//            try {
+//            logInView = new Login();
+//            int userId = logInView.whoIsLoggedIn().getUserId();
+//            double salary = Double.parseDouble(salaryTextField.getText());
+//
+//            databaseConnection.addWorkplace(userId, nameTextField.getText(), salary);
+//            editComboBox();
+//            stage.close(); 
+//            }
+//
+//            catch (NumberFormatException e)
+//            {
+//                Alert alert = new Alert(Alert.AlertType.WARNING);
+//                alert.setTitle("Warning Dialog");
+//                alert.setHeaderText("Please fill all the information!");
+//                alert.showAndWait();
+//            }
+//        });
+//
+//        hBox = new HBox();
+//        hBox.getChildren().addAll(addButton, btnBack);
+//
+//        selectedImage2 = new ImageView();
+//        image2 = new Image(Login.class.getResourceAsStream("pic2.jpg"));
+//        selectedImage2.setImage(image2);
+//
+//        vBox = new VBox();
+//        vBox.getChildren().addAll( selectedImage2, nameTextField, salaryTextField,
+//                hBox);
+//
+//        vBox.setStyle("-fx-background-color: ghostwhite");
+//
+//        scene = new Scene(vBox, 248, 316);
+//
+//        stage = new Stage();
+//        stage.setScene(scene);
+//        stage.show();
+//
+//        return stage;
+//    }
 }

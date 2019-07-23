@@ -8,3 +8,20 @@ and open the template in the editor.
     Author     : Edgaras
 */
 
+.btn-save{
+    -fx-font-size: 25px;
+    -fx-background-color: powderblue;
+    -fx-border-color: black;
+}
+
+.btn-addNewWorkplace{
+    -fx-font-size: 25px;
+    -fx-background-color: powderblue;
+    -fx-border-color: black;
+}
+
+.btn-back{
+    -fx-font-size: 25px;
+    -fx-background-color: powderblue;
+    -fx-border-color: black;
+}
