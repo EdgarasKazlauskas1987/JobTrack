@@ -9,46 +9,38 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import Controller.Database;
 
-import Controller.DatabaseModel;
 
-import javax.swing.*;
-
-/**
- * Created by Edgaras on 4/8/2016.
- */
 public class Login extends Application
 {
     AddUser newAccountView;
-    DatabaseModel databaseModel;
-
-    public static User user;
+    Database databaseModel;
 
     Stage mainStage = new Stage();
     Scene loginScene;
 
-    HBox loginHbox;
-    VBox loginVbox;
+    HBox hBoxLogin = new HBox();
+    VBox vBoxLogin = new VBox();
 
-    VBox vBox1;
-    VBox vBox2;
+    VBox vBoxUsername = new VBox();
+    VBox vBoxPassword = new VBox();
 
-    Button loginButton;
-    Button newAccountButton;
+    Button btnLogin = new Button("Login");
+    Button btnNewUser = new Button("New User");
 
-    TextField usernameTextField;
-   // TextField passwordTextField;
-    PasswordField passwordTextField;
+    TextField txtUsername = new TextField();
+    PasswordField ptxtPassword = new PasswordField();
 
-    Label usernameLabel;
-    Label passwordLabel;
-
-    MainWindow mainWindowView;
+    Label lblUsername = new Label("Username");
+    Label lblPassword = new Label("Password");
 
     ImageView selectedImage;
     Image image = new Image(getClass().getResourceAsStream("/logo.png"));
+    
+    MainWindow mainWindowView;
+    public static User user;
 
     @Override
     public void start(Stage primaryStage) throws Exception 
@@ -58,67 +50,47 @@ public class Login extends Application
     }
 
     public Scene getLoginScene()
-    {
-        usernameLabel = new Label("User Name");
-        passwordLabel = new Label("Password");
+    {        
+        btnLogin.getStyleClass().add("login-button");
+        btnNewUser.getStyleClass().add("login-button");
 
-        usernameTextField = new TextField();
-        passwordTextField = new PasswordField();
-
-        loginButton = new Button("Log in");
-        loginButton.setStyle("-fx-font-size: 20px; -fx-background-color: powderblue; -fx-border-color: black");
-
-        newAccountButton = new Button("New account");
-        newAccountButton.setStyle("-fx-font-size: 20px; -fx-background-color: powderblue; -fx-border-color: black");
-
-        loginHbox = new HBox();
-        loginVbox = new VBox();
-
-        vBox1 = new VBox();
-        vBox2 = new VBox();
-        vBox1.getChildren().addAll(usernameLabel, usernameTextField);
-        vBox1.setStyle("-fx-font-size: 20px");
-        vBox2.getChildren().addAll(passwordLabel, passwordTextField);
-        vBox2.setStyle("-fx-font-size: 20px");
+        vBoxUsername.getChildren().addAll(lblUsername, txtUsername);
+        vBoxUsername.getStyleClass().add("vBox-credentials");
+        vBoxPassword.getChildren().addAll(lblPassword, ptxtPassword);
+        vBoxPassword.getStyleClass().add("vBox-credentials");
 
         selectedImage = new ImageView();
         selectedImage.setImage(image);
 
-        loginHbox.getChildren().addAll(loginButton, newAccountButton);
-        loginVbox.getChildren().addAll(selectedImage,vBox1, vBox2, loginHbox);
-        loginVbox.setSpacing(20);
-        loginVbox.setStyle("-fx-background-color: ghostwhite");
+        hBoxLogin.getChildren().addAll(btnLogin, btnNewUser);
+        vBoxLogin.getChildren().addAll(selectedImage,vBoxUsername, vBoxPassword, hBoxLogin);
+        vBoxLogin.getStyleClass().add("vBox-login");
 
-        loginScene = new Scene(loginVbox, 232, 350);
+        loginScene = new Scene(vBoxLogin, 232, 350);
         loginScene.getStylesheets().add("Resources/Styles/LoginStyles.css");
-        loginVbox.setAlignment(Pos.BOTTOM_CENTER);
 
-        newAccountButton.setOnAction(event -> {
+        btnNewUser.setOnAction(event -> {
             newAccountView = new AddUser();
             newAccountView.getNewAccountStage();
         });
 
-        loginButton.setOnAction(event -> {
-            databaseModel = new DatabaseModel();
-            String userName = usernameTextField.getText();
-            String password = passwordTextField.getText();
+        btnLogin.setOnAction(event -> {
+            databaseModel = new Database();
+            String userName = txtUsername.getText();
+            String password = ptxtPassword.getText();
 
             user = databaseModel.retrieveUserIfAllowedToLogIn(userName, password);
 
             if (user == null)
             {
-                //System.out.println("sorry");
                 Alert alert = new Alert(Alert.AlertType.WARNING);
                 alert.setTitle("Warning Dialog");
                 alert.setHeaderText("Username or password is wrong!");
-                //alert.setContentText("Careful with the next step!");
                 alert.showAndWait();
             }
-
             else 
             {
                 mainWindowView = new MainWindow();
-               // mainStage.setScene(mainWindowView.getMainWindowScene());
                 mainWindowView.getMainWindowStage();
                 mainWindowView.updateTable();
             }

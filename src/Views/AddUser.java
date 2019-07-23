@@ -7,7 +7,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
-import Controller.DatabaseModel;
+import Controller.Database;
 import Views.Login;
 import javafx.stage.Stage;
 
@@ -16,7 +16,7 @@ import javafx.stage.Stage;
  */
 public class AddUser {
 
-    DatabaseModel databaseModel;
+    Database databaseModel;
     Login logInView;
 
     Scene newAccountScene;
@@ -54,7 +54,7 @@ public class AddUser {
         saveButton.setStyle("-fx-font-size: 37px; -fx-background-color: powderblue; -fx-border-color: black");
 
         saveButton.setOnAction(event -> {
-            databaseModel = new DatabaseModel();
+            databaseModel = new Database();
 
             databaseModel.addNewUser(fullnameTextfield.getText(), usernameTextfield.getText(),
                     passwordTextfield.getText());

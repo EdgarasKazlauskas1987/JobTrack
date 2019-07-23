@@ -13,11 +13,11 @@ import java.util.ArrayList;
 /**
  * Created by Edgaras on 4/9/2016.
  */
-public class DatabaseModel {
+public class Database {
 
     private java.sql.Connection conn = null;
 
-    public DatabaseModel() {
+    public Database() {
 
         String DB_URL = "jdbc:mysql://localhost/jobtrack";
         String USER = "root";

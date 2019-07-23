@@ -8,3 +8,19 @@ and open the template in the editor.
     Author     : Edgaras
 */
 
+.login-button{
+    -fx-font-size: 20px;
+    -fx-background-color: powderblue;
+    -fx-border-color: black;
+}
+
+.vBox-credentials{
+    -fx-font-size: 20px;
+}
+
+.vBox-login{
+    -fx-spacing: 20;
+    -fx-alignment: center;
+    -fx-background-color: ghostwhite;
+}
+

@@ -1,6 +1,6 @@
 package Views;
 
-import Controller.DatabaseModel;
+import Controller.Database;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -9,14 +9,14 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-import Controller.DatabaseModel;
+import Controller.Database;
 
 /**
  * Created by Edgaras on 4/9/2016.
  */
 public class AddWorkplace {
 
-    DatabaseModel databaseModel;
+    Database databaseModel;
     Login logInView;
     MainWindow mainWindowView;
 
@@ -53,7 +53,7 @@ public class AddWorkplace {
         });
 
         addButton.setOnAction(event -> {
-            databaseModel = new DatabaseModel();
+            databaseModel = new Database();
             logInView = new Login();
             int userId = logInView.whoIsLoggedIn().getUserId();
             double salary = Double.parseDouble(salaryTextField.getText());

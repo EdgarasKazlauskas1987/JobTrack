@@ -1,6 +1,6 @@
 package Views;
 
-import Controller.DatabaseModel;
+import Controller.Database;
 import Model.JobDay;
 import Model.Workplace;
 import javafx.collections.FXCollections;
@@ -26,7 +26,7 @@ import java.util.Calendar;
 public class MainWindow {
 
     AddWorkplace newWorkplaceView;
-    DatabaseModel databaseModel;
+    Database databaseModel;
     Login logInView;
 
     Workplace workplace;
@@ -113,7 +113,7 @@ public class MainWindow {
         fromLabel = new Label("Hours Worked"); // make double!!
         payHourLabel = new Label("Pay/h");
 
-        databaseModel = new DatabaseModel();
+        databaseModel = new Database();
         logInView = new Login();
 
         ObservableList<Workplace> workplacesList = FXCollections.observableArrayList();
@@ -196,7 +196,7 @@ public class MainWindow {
         showButton = new Button("Show");
 
         showButton.setOnAction(event2 -> {
-            databaseModel = new DatabaseModel();
+            databaseModel = new Database();
             logInView = new Login();
             ArrayList<JobDay> list = new ArrayList<JobDay>();
 
@@ -240,7 +240,7 @@ public class MainWindow {
 
         saveButton.setOnAction(event1 -> {
             try {
-                    databaseModel = new DatabaseModel();
+                    databaseModel = new Database();
                     logInView = new Login();
                     date = Date.valueOf(datePicker.getValue());
 
@@ -509,7 +509,7 @@ public class MainWindow {
 
         addButton.setOnAction(event -> {
             try {
-            databaseModel = new DatabaseModel();
+            databaseModel = new Database();
             logInView = new Login();
             int userId = logInView.whoIsLoggedIn().getUserId();
             double salary = Double.parseDouble(salaryTextField.getText());
