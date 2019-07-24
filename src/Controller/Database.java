@@ -3,6 +3,7 @@ package Controller;
 import Model.JobDay;
 import Model.User;
 import Model.Workplace;
+import Utilities.Queries;
 
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -38,8 +39,7 @@ public class Database {
 
     public void addNewUser(String fullName, String userName, String password) 
     {
-        String sql = "INSERT INTO useraccount VALUES(null, ?, ?, ? )";
-
+        String sql = Queries.ADD_NEW_USER;
         try {
             PreparedStatement preparedStatement = conn.prepareStatement(sql);
             preparedStatement.setString(1, fullName);
@@ -56,7 +56,7 @@ public class Database {
 
     public User retrieveUserIfAllowedToLogIn(String userName, String password) 
     {
-        String sql = "SELECT * FROM useraccount WHERE userName = ? AND password= ?";
+        String sql = Queries.USER_AUTHORIZED;
         User user = null;
         try {
             PreparedStatement preparedStatement = conn.prepareStatement(sql);
@@ -80,7 +80,7 @@ public class Database {
 
     public void addWorkplace(int userId, String name, double salary) 
     {
-        String sql = "INSERT INTO workplace VALUES(null, ?, ?, ?)";
+        String sql = Queries.ADD_WORKPLACE;
         try {
             PreparedStatement preparedStatement = conn.prepareStatement(sql);
             preparedStatement.setInt(1, userId);
@@ -100,10 +100,9 @@ public class Database {
     public ArrayList<Workplace> getWorkplaces(int userId) 
     {
         ArrayList<Workplace> workplaceList = new ArrayList<>();
-
         try 
         {
-            String sql = "SELECT * FROM workplace WHERE userId = ?";
+            String sql = Queries.GET_WORKPLACES;
             PreparedStatement preparedStatement = conn.prepareStatement(sql);
             preparedStatement.setInt(1, userId);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -126,8 +125,7 @@ public class Database {
         double out = 0;
         try 
         {
-            String sql = "SELECT salaryperhour FROM workplace WHERE workplacenames = ?";
-
+            String sql = Queries.GET_SALARY;
             //Statement statement=conn.createStatement();
             PreparedStatement preparedStatement = conn.prepareStatement(sql);
             preparedStatement.setString(1, workplacenames);
@@ -152,7 +150,7 @@ public class Database {
     String yearpart, String monthpart)
     {
         //double sum = hourseWorked * payperhour;
-        String sql = "INSERT INTO jobday VALUES(null, ?, ?, ?, ? , ?, ?, ?, ?)";
+        String sql = Queries.ADD_JOBDAY;
         try 
         {
             PreparedStatement preparedStatement = conn.prepareStatement(sql);
@@ -176,10 +174,9 @@ public class Database {
     public ArrayList<JobDay> getJobdays(int userId, String year, String month ) 
     {
         ArrayList<JobDay> jobDaysList = new ArrayList<>();
-
         try 
         {
-            String sql = "SELECT * FROM jobday WHERE userId = ? AND yearpart = ? AND monthpart = ? ";
+            String sql = Queries.GET_JOBDAYS;
 
             PreparedStatement preparedStatement = conn.prepareStatement(sql);
             preparedStatement.setInt(1, userId);
@@ -206,7 +203,7 @@ public class Database {
         double out = 0;
         try 
         {
-            String sql = "SELECT SUM(totalmoney) FROM jobday WHERE userId = ? AND yearpart = ? AND monthpart = ?";
+            String sql = Queries.GET_MONEY_EARNED;
 
             PreparedStatement preparedStatement = conn.prepareStatement(sql);
             preparedStatement.setInt(1, userId);
@@ -233,7 +230,7 @@ public class Database {
     {
         double out = 0;
         try {
-            String sql = "SELECT SUM(hourseWorked) FROM jobday WHERE userId = ? AND yearpart = ? AND monthpart = ?";
+            String sql = Queries.GET_TOTAL_HOURS;
 
             //Statement statement=conn.createStatement();
             PreparedStatement preparedStatement = conn.prepareStatement(sql);
