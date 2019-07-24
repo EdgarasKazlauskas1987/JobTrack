@@ -84,7 +84,7 @@ public class MainWindow {
         logInView = new Login();
 
         ObservableList<Workplace> workplacesList = FXCollections.observableArrayList();
-        workplacesList.addAll(databaseConnection.getWorkplaces2(logInView.whoIsLoggedIn().getUserId()));
+        workplacesList.addAll(databaseConnection.getWorkplaces(logInView.whoIsLoggedIn().getUserId()));
         workplaceCombobox = new ComboBox(workplacesList);
 
         workplaceCombobox.setOnAction(event -> {
@@ -292,7 +292,7 @@ public class MainWindow {
     public void updateComboBox()
     {
         ObservableList<Workplace> workplaces = FXCollections.observableArrayList();
-        ArrayList<Workplace> lis = databaseConnection.getWorkplaces2(logInView.whoIsLoggedIn().getUserId());
+        ArrayList<Workplace> lis = databaseConnection.getWorkplaces(logInView.whoIsLoggedIn().getUserId());
         System.out.println(lis.size());
        // workplaceCombobox = new ComboBox(workplacesList);
 
@@ -302,6 +302,4 @@ public class MainWindow {
         }
         workplaceCombobox.setItems(workplaces);
     }
-
-
 }

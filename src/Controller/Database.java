@@ -36,7 +36,8 @@ public class Database {
         return databaseInstance;
     }
 
-    public void addNewUser(String fullName, String userName, String password) {
+    public void addNewUser(String fullName, String userName, String password) 
+    {
         String sql = "INSERT INTO useraccount VALUES(null, ?, ?, ? )";
 
         try {
@@ -45,15 +46,16 @@ public class Database {
             preparedStatement.setString(2, userName);
             preparedStatement.setString(3, password);
 
-
             int numberOfRows = preparedStatement.executeUpdate();
-            System.out.println("Completed insert. Number of rows affected:" + numberOfRows);
-        } catch (SQLException e) {
+            } 
+        catch (SQLException e) 
+        {
             e.printStackTrace();
         }
     }
 
-    public User retrieveUserIfAllowedToLogIn(String userName, String password) {
+    public User retrieveUserIfAllowedToLogIn(String userName, String password) 
+    {
         String sql = "SELECT * FROM useraccount WHERE userName = ? AND password= ?";
         User user = null;
         try {
@@ -62,23 +64,22 @@ public class Database {
             preparedStatement.setString(2, password);
 
             ResultSet resultSet = preparedStatement.executeQuery();
-            if (resultSet.next()) {
+            if (resultSet.next()) 
+            {
                 int userId = resultSet.getInt(1);
                 String fullName = resultSet.getString(2);
-                //   String userNameS = resultSet.getString(3);
-                // String passwordS = resultSet.getString(4);
-
-
                 user = new User(userId, fullName, userName, password);
-
             }
-        } catch (SQLException e) {
+        } 
+        catch (SQLException e) 
+        {
             e.printStackTrace();
         }
         return user;
     }
 
-    public void addWorkplace(int userId, String name, double salary) {
+    public void addWorkplace(int userId, String name, double salary) 
+    {
         String sql = "INSERT INTO workplace VALUES(null, ?, ?, ?)";
         try {
             PreparedStatement preparedStatement = conn.prepareStatement(sql);
@@ -89,42 +90,22 @@ public class Database {
             int numberOfRows = preparedStatement.executeUpdate();
             System.out.println("Completed insert. Number of rows affected:" + numberOfRows);
 
-        } catch (SQLException e) {
+        } 
+        catch (SQLException e) 
+        {
             e.printStackTrace();
         }
-
     }
 
-    public ArrayList<Workplace> getWorkplaces(int userId) {
+    public ArrayList<Workplace> getWorkplaces(int userId) 
+    {
         ArrayList<Workplace> workplaceList = new ArrayList<>();
 
-        try {
+        try 
+        {
             String sql = "SELECT * FROM workplace WHERE userId = ?";
-
             PreparedStatement preparedStatement = conn.prepareStatement(sql);
             preparedStatement.setInt(1, userId);
-
-            ResultSet resultSet = preparedStatement.executeQuery();
-
-            while (resultSet.next()) {
-                Workplace workplace = new Workplace(resultSet.getString(1));
-                workplaceList.add(workplace);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return workplaceList;
-    }
-
-    public ArrayList<Workplace> getWorkplaces2(int userId) {
-        ArrayList<Workplace> workplaceList = new ArrayList<>();
-
-        try {
-            String sql = "SELECT * FROM workplace WHERE userId = ?";
-
-            PreparedStatement preparedStatement = conn.prepareStatement(sql);
-            preparedStatement.setInt(1, userId);
-
             ResultSet resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
@@ -132,30 +113,37 @@ public class Database {
                         resultSet.getInt(4));
                 workplaceList.add(workplace);
             }
-        } catch (SQLException e) {
+        } 
+        catch (SQLException e) 
+        {
             e.printStackTrace();
         }
         return workplaceList;
     }
 
-    public Double getSalary(String workplacenames) {
+    public Double getSalary(String workplacenames) 
+    {
         double out = 0;
-        try {
+        try 
+        {
             String sql = "SELECT salaryperhour FROM workplace WHERE workplacenames = ?";
 
             //Statement statement=conn.createStatement();
             PreparedStatement preparedStatement = conn.prepareStatement(sql);
             preparedStatement.setString(1, workplacenames);
             ResultSet resultSet = preparedStatement.executeQuery();
-            if (resultSet.next()) {
+            if (resultSet.next()) 
+            {
                 out = resultSet.getDouble(1);
-
-
-            } else {
+            } 
+            else 
+            {
                 out = 0;
             }
 
-        } catch (SQLException e) {
+        } 
+        catch (SQLException e) 
+        {
             e.printStackTrace();
         }
         return out;
@@ -166,7 +154,8 @@ public class Database {
     {
         //double sum = hourseWorked * payperhour;
         String sql = "INSERT INTO jobday VALUES(null, ?, ?, ?, ? , ?, ?, ?, ?)";
-        try {
+        try 
+        {
             PreparedStatement preparedStatement = conn.prepareStatement(sql);
             preparedStatement.setInt(1, userId);
             preparedStatement.setString(2, workplacename);
@@ -178,8 +167,6 @@ public class Database {
             preparedStatement.setDouble(8, payperhour * hourseWorked);
 
             int numberOfRows = preparedStatement.executeUpdate();
-            System.out.println("Completed insert. Number of rows affected:" + numberOfRows);
-
         }
         catch (SQLException e)
         {
@@ -187,10 +174,12 @@ public class Database {
         }
     }
 
-    public ArrayList<JobDay> getJobdays(int userId, String year, String month ) {
+    public ArrayList<JobDay> getJobdays(int userId, String year, String month ) 
+    {
         ArrayList<JobDay> jobDaysList = new ArrayList<>();
 
-        try {
+        try 
+        {
             String sql = "SELECT * FROM jobday WHERE userId = ? AND yearpart = ? AND monthpart = ? ";
 
             PreparedStatement preparedStatement = conn.prepareStatement(sql);
@@ -200,7 +189,8 @@ public class Database {
 
             ResultSet resultSet = preparedStatement.executeQuery();
 
-            while (resultSet.next()) {
+            while (resultSet.next()) 
+            {
                 JobDay jobDay = new JobDay(resultSet.getString(3),
                         resultSet.getDate(4), resultSet.getInt(5), resultSet.getDouble(6)
                 );
@@ -215,7 +205,8 @@ public class Database {
     public Double getMoneyEarned(int userId, String year, String month)
     {
         double out = 0;
-        try {
+        try 
+        {
             String sql = "SELECT SUM(totalmoney) FROM jobday WHERE userId = ? AND yearpart = ? AND monthpart = ?";
 
             PreparedStatement preparedStatement = conn.prepareStatement(sql);
@@ -223,15 +214,17 @@ public class Database {
             preparedStatement.setString(2, year);
             preparedStatement.setString(3, month);
             ResultSet resultSet = preparedStatement.executeQuery();
-            if (resultSet.next()) {
+            if (resultSet.next()) 
+            {
                 out = resultSet.getDouble(1);
-
-
-            } else {
+            } 
+            else 
+            {
                 out = 0;
             }
-
-        } catch (SQLException e) {
+        } 
+        catch (SQLException e) 
+        {
             e.printStackTrace();
         }
         return out;
@@ -249,15 +242,18 @@ public class Database {
             preparedStatement.setString(2, year);
             preparedStatement.setString(3, month);
             ResultSet resultSet = preparedStatement.executeQuery();
-            if (resultSet.next()) {
+            if (resultSet.next()) 
+            {
                 out = resultSet.getDouble(1);
-
-
-            } else {
+            } 
+            else 
+            {
                 out = 0;
             }
 
-        } catch (SQLException e) {
+        } 
+        catch (SQLException e) 
+        {
             e.printStackTrace();
         }
         return out;
