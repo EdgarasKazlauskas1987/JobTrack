@@ -140,7 +140,6 @@ public class Database {
             {
                 out = 0;
             }
-
         } 
         catch (SQLException e) 
         {
