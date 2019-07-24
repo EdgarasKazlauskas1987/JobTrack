@@ -54,7 +54,6 @@ public class MainWindow {
     TextField txtTotalMoneyEarned = new TextField();
 
     DatePicker datePicker;
-
     TableView<JobDay> tableView;
 
     BorderPane borderPane;
@@ -64,16 +63,14 @@ public class MainWindow {
     VBox vBoxLeft = new VBox();
     VBox vBoxRight = new VBox();
 
-    VBox vBox1;
-    VBox vBox2;
-    VBox vBox3;
-    VBox vBox4;
+    VBox vBoxTop = new VBox();
+    VBox vBoxFirstMiddle = new VBox();
+    VBox vBoxSecondMiddle = new VBox();
+    VBox vBoxBottom = new VBox();
 
-    HBox bottomHbox;
+    HBox hBoxBottom = new HBox();
+    HBox hBoxForTop = new HBox();
     HBox leftHbox;
-
-    HBox hBox1;
-    HBox hBox2;
 
     Date date;
 
@@ -81,19 +78,6 @@ public class MainWindow {
 
     ImageView selectedImage;
     Image imageLogo = new Image(getClass().getResourceAsStream("/logo.png"));
-
-    Label workplacenameLabel;
-    Label salaryLabel;
-
-    TextField nameTextField;
-    TextField salaryTextField;
-
-    Button addButton;
-    Button backButton2;
-
-    VBox vBox;
-    HBox hBox;
-    HBox hBoxForTop;
 
     public Stage getMainWindowStage()
     {
@@ -177,7 +161,7 @@ public class MainWindow {
         yearCombobox.setStyle("-fx-font-size: 15px; -fx-background-color: powderblue; -fx-border-color: black");
         monthCombobox.setStyle("-fx-font-size: 15px; -fx-background-color: powderblue; -fx-border-color: black");
         btnShow.setStyle("-fx-font-size: 15px; -fx-background-color: powderblue; -fx-border-color: black");
-        hBoxForTop = new HBox();
+
         hBoxForTop.getChildren().addAll(yearCombobox,monthCombobox,btnShow);
 
         hBoxForTop.setSpacing(78);
@@ -257,23 +241,18 @@ public class MainWindow {
             
         });
 
-        bottomHbox = new HBox();
-        bottomHbox.getChildren().addAll(btnSave, btnAddNewWorkplace, btnBack);
-        borderPane.setBottom(bottomHbox);
+        hBoxBottom.getChildren().addAll(btnSave, btnAddNewWorkplace, btnBack);
+        borderPane.setBottom(hBoxBottom);
 
-        vBox1 = new VBox();
-        vBox1.getChildren().addAll(lblWorkplace, workplaceCombobox);
-        vBox2 = new VBox();
-        vBox2.getChildren().addAll(lblCalendar, datePicker);
-        vBox3 = new VBox();
-        vBox3.getChildren().addAll(lblHoursWorked, txtHoursWorked);
-        vBox4 = new VBox();
-        vBox4.getChildren().addAll(lblPayHour, txtPayPerHour);
+        vBoxTop.getChildren().addAll(lblWorkplace, workplaceCombobox);
+        vBoxFirstMiddle.getChildren().addAll(lblCalendar, datePicker);
+        vBoxSecondMiddle.getChildren().addAll(lblHoursWorked, txtHoursWorked);
+        vBoxBottom.getChildren().addAll(lblPayHour, txtPayPerHour);
 
         selectedImage = new ImageView();
         selectedImage.setImage(imageLogo);
 
-        vBoxLeft.getChildren().addAll(selectedImage, vBox1, vBox2, vBox3, vBox4);
+        vBoxLeft.getChildren().addAll(selectedImage, vBoxTop, vBoxFirstMiddle, vBoxSecondMiddle, vBoxBottom);
         vBoxLeft.setSpacing(15);
         vBoxLeft.setAlignment(Pos.BOTTOM_CENTER);
 
