@@ -23,7 +23,7 @@ In order to run the project a small amount of prerequisites and additional steps
 
 ### Running
 
-+ Run jobtrackdb.sql file in order to get database schema and data
++ Run jobtrackdb.sql file in Resources folder for getting database schema and data
 + Run Login.java file and create you account or use a default account with credentials:
     - Username: Edga
     - Password: Edga
