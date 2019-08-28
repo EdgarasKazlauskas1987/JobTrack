@@ -12,19 +12,19 @@ public class AddUser {
     
     Database databaseConnection = Database.getDBInstance();
     Login logInView;
+    
+    private TextField txtFullname = new TextField();
+    private TextField txtUsername = new TextField();
+    private TextField txtPassword = new TextField();
 
-    Scene scnNewUser;
-    Stage stage;
+    private Button btnBack = new Button("Back");
+    private Button btnSave = new Button("Save");
 
-    TextField txtFullname = new TextField();
-    TextField txtUsername = new TextField();
-    TextField txtPassword = new TextField();
+    private VBox vBoxNewUser = new VBox();
+    private HBox hBoxNewUser = new HBox();
 
-    Button btnBack = new Button("Back");
-    Button btnSave = new Button("Save");
-
-    VBox vBoxNewUser = new VBox();
-    HBox hBoxNewUser = new HBox();
+    private Scene scnNewUser;
+    private Stage stage;
 
     public Stage getNewAccountStage()
     {

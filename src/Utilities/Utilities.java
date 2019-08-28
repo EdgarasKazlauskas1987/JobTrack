@@ -14,7 +14,7 @@ import java.util.Locale;
  */
 public class Utilities {
     
-    public String getCurrentYear()
+    public static String getCurrentYear()
     {
         Calendar currentDate = Calendar.getInstance();
         int year = currentDate.get(Calendar.YEAR);
@@ -22,7 +22,7 @@ public class Utilities {
         return String.valueOf(year);
     }
     
-    public String getCurrentMonth()
+    public static String getCurrentMonth()
     {
         Calendar currentDate = Calendar.getInstance();
         String month = currentDate.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault());

@@ -2,7 +2,7 @@ package Model;
 
 
 public class User {
-
+    
     private int userId;
     private String fullName;
     private String userName;
@@ -29,6 +29,5 @@ public class User {
         this.fullName = fullName;
         this.userName = userName;
         this.password = password;
-
     }
 }

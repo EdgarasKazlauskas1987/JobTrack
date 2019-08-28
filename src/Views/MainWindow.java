@@ -26,58 +26,57 @@ public class MainWindow {
     AddWorkplace newWorkplace;
     Database databaseConnection = Database.getDBInstance();
     MainWindowController mainWindowController;
-    Utilities utilities = new Utilities();
     Login logInView;
 
     Workplace workplace;
 
-    Label lblWorkplace = new Label("Workplace");
-    Label lblCalendar = new Label("Choose date");
-    Label lblHoursWorked = new Label("Hours Worked");
-    Label lblPayHour = new Label("Pay/h");
+    private Label lblWorkplace = new Label("Workplace");
+    private Label lblCalendar = new Label("Choose date");
+    private Label lblHoursWorked = new Label("Hours Worked");
+    private Label lblPayHour = new Label("Pay/h");
 
-    Label lblTotalHoursWorked = new Label("Total hourse worked");
-    Label lblTotalMoneyEarned = new Label("Total money earned");
+    private Label lblTotalHoursWorked = new Label("Total hourse worked");
+    private Label lblTotalMoneyEarned = new Label("Total money earned");
 
-    Button btnSave = new Button("Save new Job day");
-    Button btnAddNewWorkplace = new Button("Add new workplace");
-    Button btnBack = new Button("Back");
-    Button btnShow = new Button("Show");
+    private Button btnSave = new Button("Save new Job day");
+    private Button btnAddNewWorkplace = new Button("Add new workplace");
+    private Button btnBack = new Button("Back");
+    private Button btnShow = new Button("Show");
 
-    ComboBox workplaceCombobox;
-    ComboBox<String> yearCombobox;
-    ComboBox<String> monthCombobox;
+    private ComboBox workplaceCombobox;
+    private ComboBox<String> yearCombobox;
+    private ComboBox<String> monthCombobox;
 
-    TextField txtHoursWorked = new TextField();
-    TextField txtPayPerHour = new TextField();
-    TextField txtTotalHoursWorked = new TextField();
-    TextField txtTotalMoneyEarned = new TextField();
+    private TextField txtHoursWorked = new TextField();
+    private TextField txtPayPerHour = new TextField();
+    private TextField txtTotalHoursWorked = new TextField();
+    private TextField txtTotalMoneyEarned = new TextField();
 
-    DatePicker datePicker;
-    TableView<JobDay> tableView;
+    private DatePicker datePicker;
+    private TableView<JobDay> tableView;
 
     BorderPane borderPane;
     Scene scnMainWindow;
     Stage stgMainWindow;
 
-    VBox vBoxLeft = new VBox();
-    VBox vBoxRight = new VBox();
+    private VBox vBoxLeft = new VBox();
+    private VBox vBoxRight = new VBox();
 
-    VBox vBoxTop = new VBox();
-    VBox vBoxFirstMiddle = new VBox();
-    VBox vBoxSecondMiddle = new VBox();
-    VBox vBoxBottom = new VBox();
+    private VBox vBoxTop = new VBox();
+    private VBox vBoxFirstMiddle = new VBox();
+    private VBox vBoxSecondMiddle = new VBox();
+    private VBox vBoxBottom = new VBox();
 
-    HBox hBoxBottom = new HBox();
-    HBox hBoxForTop = new HBox();
-    HBox leftHbox;
+    private HBox hBoxBottom = new HBox();
+    private HBox hBoxForTop = new HBox();
+    private HBox leftHbox;
 
     Date date;
 
-    ArrayList<Workplace> workplaces;
+    private ArrayList<Workplace> workplaces;
 
-    ImageView selectedImage;
-    Image imageLogo = new Image(getClass().getResourceAsStream("/logo.png"));
+    private ImageView selectedImage;
+    private Image imageLogo = new Image(getClass().getResourceAsStream("/logo.png"));
 
     public Stage getMainWindowStage()
     {
@@ -122,14 +121,14 @@ public class MainWindow {
 
         mainWindowController = new MainWindowController();
         yearCombobox = new ComboBox<>(mainWindowController.populateYear());
-        yearCombobox.setValue(utilities.getCurrentYear());
+        yearCombobox.setValue(Utilities.getCurrentYear());
 
         ObservableList<String> monthList  = FXCollections.observableArrayList();
         monthList.addAll("January", "February", "March", "April", "May", "June", "July",
                 "August", "September", "October", "November", "December" );
 
         monthCombobox = new ComboBox<>(monthList);
-        monthCombobox.setValue(utilities.getCurrentMonth());
+        monthCombobox.setValue(Utilities.getCurrentMonth());
 
         btnShow.setOnAction(event -> {
             logInView = new Login();

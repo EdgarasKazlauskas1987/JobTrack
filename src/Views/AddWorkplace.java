@@ -18,26 +18,25 @@ public class AddWorkplace {
 
     Database databaseConnection = Database.getDBInstance();
     Login logInView;
-    MainWindow mainWindowView;
+    MainWindow mainWindow = new MainWindow();
 
-    Label lblWorkplaceName = new Label("Name of workplace");
-    Label lblSalary = new Label("dkk/hour");
+    private Label lblWorkplaceName = new Label("Name of workplace");
+    private Label lblSalary = new Label("dkk/hour");
 
-    TextField txtWorkplaceName = new TextField();
-    TextField txtSalary = new TextField();
+    private TextField txtWorkplaceName = new TextField();
+    private TextField txtSalary = new TextField();
 
-    Button btnAdd = new Button("Add");
-    Button btnBack = new Button("Back");
+    private Button btnAdd = new Button("Add");
+    private Button btnBack = new Button("Back");
     
-    ImageView imgView;
-    Image imgLogo = new Image(getClass().getResourceAsStream("/logo.png"));
+    private ImageView imgView;
+    private Image imgLogo = new Image(getClass().getResourceAsStream("/logo.png"));
+    
+    private VBox vBoxLabelsTextfields;
+    private HBox hBoxButtons;
 
     Stage stgAddWorkplace;
-
     Scene scnAddWorkplace;
-
-    VBox vBoxLabelsTextfields;
-    HBox hBoxButtons;
 
     public Stage getNewWorkplaceStage()
     {

@@ -17,26 +17,26 @@ public class Login extends Application
     AddUser newAccountView;
     Database databaseConnetion = Database.getDBInstance();
 
+    private Button btnLogin = new Button("Login");
+    private Button btnNewUser = new Button("New User");
+
+    private TextField txtUsername = new TextField();
+    private PasswordField ptxtPassword = new PasswordField();
+
+    private Label lblUsername = new Label("Username");
+    private Label lblPassword = new Label("Password");
+
+    private ImageView selectedImage;
+    private Image image = new Image(getClass().getResourceAsStream("/logo.png"));
+    
+    private HBox hBoxLogin = new HBox();
+    private VBox vBoxLogin = new VBox();
+
+    private VBox vBoxUsername = new VBox();
+    private VBox vBoxPassword = new VBox();
+    
     Stage mainStage = new Stage();
     Scene loginScene;
-
-    HBox hBoxLogin = new HBox();
-    VBox vBoxLogin = new VBox();
-
-    VBox vBoxUsername = new VBox();
-    VBox vBoxPassword = new VBox();
-
-    Button btnLogin = new Button("Login");
-    Button btnNewUser = new Button("New User");
-
-    TextField txtUsername = new TextField();
-    PasswordField ptxtPassword = new PasswordField();
-
-    Label lblUsername = new Label("Username");
-    Label lblPassword = new Label("Password");
-
-    ImageView selectedImage;
-    Image image = new Image(getClass().getResourceAsStream("/logo.png"));
     
     MainWindow mainWindowView;
     public static User user;
