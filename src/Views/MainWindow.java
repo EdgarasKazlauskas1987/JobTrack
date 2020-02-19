@@ -19,6 +19,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 
 public class MainWindow {
@@ -291,13 +292,15 @@ public class MainWindow {
     public void updateComboBox()
     {
         ObservableList<Workplace> workplaces = FXCollections.observableArrayList();
-        ArrayList<Workplace> lis = databaseConnection.getWorkplaces(logInView.whoIsLoggedIn().getUserId());
-        System.out.println(lis.size());
+        ArrayList<Workplace> list = databaseConnection.getWorkplaces(logInView.whoIsLoggedIn().getUserId());
+        System.out.println(list.size());
        // workplaceCombobox = new ComboBox(workplacesList);
 
-        for (int i = 0; i < lis.size(); i++)
+        //list.stream().forEach(w -> workplaces.add(w));
+        
+        for (int i = 0; i < list.size(); i++)
         {
-            workplaces.add(lis.get(i));
+            workplaces.add(list.get(i));
         }
         workplaceCombobox.setItems(workplaces);
     }
