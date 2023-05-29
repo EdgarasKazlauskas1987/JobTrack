@@ -9,7 +9,7 @@ and count both worked hours and earned money. The application can hold more than
 
 ## Technologies used
 
-+ Java programming language
++ Java
 + MySQL relational database management system (DBMS)
 
 ## Getting Started
